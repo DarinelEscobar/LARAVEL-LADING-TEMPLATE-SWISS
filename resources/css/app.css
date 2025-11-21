@@ -1,3 +1,223 @@
+@import url('https://unpkg.com/@geist/font/variable.css');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter+Tight:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.145 0 0);
+    --card: oklch(1 0 0);
+    --card-foreground: oklch(0.145 0 0);
+    --popover: oklch(1 0 0);
+    --popover-foreground: oklch(0.145 0 0);
+    --primary: oklch(0.205 0 0);
+    --primary-foreground: oklch(0.985 0 0);
+    --secondary: oklch(0.97 0 0);
+    --secondary-foreground: oklch(0.205 0 0);
+    --muted: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.556 0 0);
+    --accent: oklch(0.97 0 0);
+    --accent-foreground: oklch(0.205 0 0);
+    --destructive: oklch(0.577 0.245 27.325);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.922 0 0);
+    --input: oklch(0.922 0 0);
+    --ring: oklch(0.708 0 0);
+    --chart-1: oklch(0.646 0.222 41.116);
+    --chart-2: oklch(0.6 0.118 184.704);
+    --chart-3: oklch(0.398 0.07 227.392);
+    --chart-4: oklch(0.828 0.189 84.429);
+    --chart-5: oklch(0.769 0.188 70.08);
+    --radius: 0.625rem;
+}
+
+.dark {
+    --background: oklch(0.145 0 0);
+    --foreground: oklch(0.985 0 0);
+    --card: oklch(0.145 0 0);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(0.145 0 0);
+    --popover-foreground: oklch(0.985 0 0);
+    --primary: oklch(0.985 0 0);
+    --primary-foreground: oklch(0.205 0 0);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(0.269 0 0);
+    --muted-foreground: oklch(0.708 0 0);
+    --accent: oklch(0.269 0 0);
+    --accent-foreground: oklch(0.985 0 0);
+    --destructive: oklch(0.396 0.141 25.723);
+    --destructive-foreground: oklch(0.985 0 0);
+    --border: oklch(0.269 0 0);
+    --input: oklch(0.269 0 0);
+    --ring: oklch(0.439 0 0);
+    --chart-1: oklch(0.488 0.243 264.376);
+    --chart-2: oklch(0.696 0.17 162.48);
+    --chart-3: oklch(0.769 0.188 70.08);
+    --chart-4: oklch(0.627 0.265 303.9);
+    --chart-5: oklch(0.645 0.246 16.439);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground antialiased;
+        font-family: 'Geist', 'Space Grotesk', 'Inter Tight', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        sans-serif;
+        letter-spacing: -0.01em;
+    }
+
+    h1,
+    h2,
+    h3 {
+        @apply tracking-tight;
+    }
+}
+
+@layer utilities {
+    .glass-surface {
+        @apply bg-white/80 backdrop-blur-sm border border-border;
+    }
+
+    [data-animate] {
+        transition: opacity .7s ease, transform .7s ease;
+    }
+
+    html.js-enabled [data-animate] {
+        opacity: 0;
+    }
+
+    html.js-enabled [data-animate="up"] {
+        transform: translateY(14px);
+    }
+
+    html.js-enabled [data-animate="down"] {
+        transform: translateY(-14px);
+    }
+
+    html.js-enabled [data-animate="left"] {
+        transform: translateX(-14px);
+    }
+
+    html.js-enabled [data-animate="right"] {
+        transform: translateX(14px);
+    }
+
+    html.js-enabled [data-animate="scale"] {
+        transform: scale(0.96);
+    }
+
+    html.js-enabled.landing-loaded [data-animate] {
+        opacity: 1;
+        transform: translate(0, 0) scale(1);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeLeft {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes rotateIn {
+    from {
+        opacity: 0;
+        transform: rotate(-8deg) translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(0deg) translateY(0);
+    }
+}
+
+@keyframes float {
+    from {
+        transform: translateY(-4px);
+    }
+
+    to {
+        transform: translateY(6px);
+    }
+}
+
+.anime-title {
+    letter-spacing: -0.05em;
+}
+
+.anime-fade-up {
+    animation: fadeUp .8s ease forwards;
+}
+
+.anime-fade-right {
+    animation: fadeRight .8s ease forwards;
+}
+
+.anime-fade-left {
+    animation: fadeLeft .8s ease forwards;
+}
+
+.anime-scale-in {
+    animation: scaleIn .9s ease forwards;
+    transform-origin: bottom right;
+}
+
+.anime-rotate-in {
+    animation: rotateIn .9s ease forwards;
+    transform-origin: bottom right;
+}
+
+.anime-floating {
+    animation: float 2.6s ease-in-out infinite alternate;
+}

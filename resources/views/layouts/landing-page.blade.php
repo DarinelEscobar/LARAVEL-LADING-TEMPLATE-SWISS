@@ -17,6 +17,10 @@
 
     {{-- test --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        document.documentElement.classList.add('js-enabled');
+    </script>
+    @stack('styles')
 
     {{-- produccion --}}
     {{-- @php
@@ -32,12 +36,13 @@
     @livewireStyles
 </head>
 
-<body class="antialiased">
+<body class="antialiased bg-background text-foreground font-sans">
     <div>
         @include('partials.alerts')
         @yield('content')
     </div>
     @livewireScripts
+    @stack('scripts')
 </body>
 
 </html>
