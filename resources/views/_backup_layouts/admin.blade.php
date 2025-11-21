@@ -34,13 +34,7 @@
 
 <body class="antialiased dark:bg-gray-900">
     @include('partials.alerts')
-
-    {{-- Sidebar and top header removed per request. --}}
-
-    <main class="min-h-screen">
-        @yield('content')
-    </main>
-
+    @include('partials.sidebar')
     @livewireScripts
 </body>
 

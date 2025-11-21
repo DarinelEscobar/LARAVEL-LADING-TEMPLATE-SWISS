@@ -67,8 +67,9 @@ class AdminController extends Controller
     public function dashboard()
     {
         if (!Auth::check()) return redirect()->route('login');
-        $section = 5;
-        return view('pages.admin', compact('section'));
+        // Return a minimal admin dashboard view. Previous complex/dashboard Livewire
+        // view has been backed up to resources/views/_backup_dashboard/.
+        return view('pages.admin');
     }
 
     /**
