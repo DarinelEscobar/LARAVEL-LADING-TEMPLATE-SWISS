@@ -23,7 +23,7 @@ Route::get('reset-password/{token}', 'AuthController@showResetPasswordForm')->na
 // });
 
 Route::middleware(['auth','status'])->group(function () {
-    Route::get('dashboard', 'Admin\AdminController@dashboard')->name('dashboard');
+    Route::get('dashboard', 'Admin\AdminController@dashboard')->middleware('role:1')->name('dashboard');
     Route::post('logout','AuthController@logout')->name('logout');
 
     Route::middleware(['role:1'])->group(function () {

@@ -10,4 +10,9 @@ class Status extends Model
     use HasFactory;
     protected $table = 'status';
     protected $guarded = ['id'];
+
+    public function type()
+    {
+        return $this->belongsTo(StatusType::class, 'status_type_id');
+    }
 }

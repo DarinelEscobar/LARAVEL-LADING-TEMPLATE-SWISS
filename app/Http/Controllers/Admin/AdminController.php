@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -67,9 +68,9 @@ class AdminController extends Controller
     public function dashboard()
     {
         if (!Auth::check()) return redirect()->route('login');
-        // Return a minimal admin dashboard view. Previous complex/dashboard Livewire
-        // view has been backed up to resources/views/_backup_dashboard/.
-        return view('pages.admin');
+        $statuses = Status::with('type')->orderBy('order')->get();
+
+        return view('pages.admin', compact('statuses'));
     }
 
     /**
