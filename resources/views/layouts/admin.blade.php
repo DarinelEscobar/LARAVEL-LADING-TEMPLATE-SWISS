@@ -32,14 +32,16 @@
     @livewireStyles
 </head>
 
-<body class="antialiased dark:bg-gray-900">
+<body class="antialiased dark:bg-gray-900 flex flex-col min-h-screen">
     @include('partials.alerts')
 
-    {{-- Sidebar and top header removed per request. --}}
+    <x-admin.header />
 
-    <main class="min-h-screen">
+    <main class="flex-grow p-6">
         @yield('content')
     </main>
+
+    <x-admin.footer />
 
     @livewireScripts
 </body>
