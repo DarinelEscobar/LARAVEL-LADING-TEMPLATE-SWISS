@@ -34,5 +34,38 @@ For a production asset build, run `npm run build`.
 - Landing page content comes from `app/Livewire/Dashboard/Home.php` and `resources/views/livewire/dashboard/home.blade.php`
 - Admin dashboard view is `resources/views/pages/admin.blade.php` rendered by `App\Http\Controllers\Admin\AdminController@dashboard`, showing seeded status records
 
+## Folder Structure
+
+The project follows a component-based architecture to separate concerns (Header, Main Content, Footer) for both the Landing Page and the Admin Dashboard.
+
+### `resources/views`
+
+-   **`layouts/`**: Contains the main layout files.
+    -   `landing-page.blade.php`: Layout for the public landing page.
+    -   `admin.blade.php`: Layout for the admin dashboard.
+    -   `authentication.blade.php`: Layout for login/register pages.
+
+-   **`components/`**: Reusable Blade components.
+    -   **`landing/`**: Components specific to the landing page (e.g., `header`, `footer`, `hero`, `showcase`).
+    -   **`admin/`**: Components specific to the admin dashboard (e.g., `header`, `footer`).
+    -   **`ui/`**: General UI components (buttons, inputs, cards).
+
+-   **`pages/`**: Main page views that extend layouts.
+    -   `dashboard.blade.php`: The main admin dashboard page.
+
+-   **`livewire/`**: Livewire components for dynamic functionality.
+    -   `dashboard/home.blade.php`: The main content of the landing page.
+
+### Component Usage
+
+Both the Landing Page and Admin Dashboard layouts are structured as follows:
+
+1.  **Header**: `<x-landing.header />` or `<x-admin.header />`
+2.  **Main Content**: `@yield('content')` (which may contain Livewire components)
+3.  **Footer**: `<x-landing.footer />` or `<x-admin.footer />`
+
+This ensures a consistent structure and makes it easy to maintain or swap out parts of the UI.
+
+
 ## Testing
 Run the suite with `php artisan test`.
