@@ -8,10 +8,10 @@
                 <i class="fas fa-tachometer-alt text-gray-500"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
-            <a href=""
+            <a href="{{ route('users.index') }}"
                 class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
-                <i class="fas fa-home text-gray-500"></i>
-                <span class="ml-3">Boton</span>
+                <i class="fas fa-users text-gray-500"></i>
+                <span class="ml-3">Users</span>
             </a>
             <div>
                 <button type="button"

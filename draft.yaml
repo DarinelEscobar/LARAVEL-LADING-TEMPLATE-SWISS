@@ -1,0 +1,11 @@
+models:
+  User:
+    name: string
+    email: string unique
+    password: string
+    rememberToken: nullable
+    timestamps: true
+
+controllers:
+  UserController:
+    resource: index, create, store, edit, update, destroy, show

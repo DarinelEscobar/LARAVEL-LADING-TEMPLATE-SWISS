@@ -30,3 +30,6 @@ Route::middleware(['auth','status'])->group(function () {
         Route::resource('users','Admin\AdminController')->except(['destroy', 'update','store']);
     });
 });
+
+
+Route::resource('users', App\Http\Controllers\UserController::class);

@@ -37,9 +37,14 @@
 
     <x-admin.header />
 
-    <main class="flex-grow p-6">
-        @yield('content')
-    </main>
+    <div class="flex">
+        {{-- Sidebar --}}
+        <x-admin.sidebar />
+
+        <main class="flex-grow p-6 w-full ml-64"> {{-- Adjust margin for sidebar --}}
+            @yield('content')
+        </main>
+    </div>
 
     <x-admin.footer />
 

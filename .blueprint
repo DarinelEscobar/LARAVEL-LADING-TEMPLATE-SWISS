@@ -1,0 +1,16 @@
+created:
+    - app/Http/Controllers/UserController.php
+    - database/factories/UserFactory.php
+    - database/migrations/2025_12_09_151342_create_users_table.php
+    - app/Models/User.php
+    - tests/Feature/Http/Controllers/UserControllerTest.php
+    - app/Http/Requests/UserStoreRequest.php
+    - app/Http/Requests/UserUpdateRequest.php
+    - resources/views/user/index.blade.php
+    - resources/views/user/create.blade.php
+    - resources/views/user/show.blade.php
+    - resources/views/user/edit.blade.php
+updated:
+    - routes/web.php
+models:
+    User: { name: string, email: 'string unique', password: string, rememberToken: nullable, timestamps: timestamps }
