@@ -2,7 +2,7 @@
     <div class="flex flex-col w-64 border-r border-border bg-card">
         <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
              <div class="px-6 mb-6">
-                <a href="{{ route('landing') }}" target="_blank" class="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
+                <a href="{{ route('home') }}" target="_blank" class="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors">
                     <x-ui.icon name="external-link" class="w-4 h-4" />
                     <span class="text-xs font-medium uppercase tracking-wider">Ver Sitio Web</span>
                 </a>

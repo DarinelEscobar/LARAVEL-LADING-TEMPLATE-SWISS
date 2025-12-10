@@ -24,7 +24,10 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'password' => fake()->password(),
-            'rememberToken' => fake()->word(),
+            'remember_token' => fake()->word(),
+            'person_id' => 1,
+            'status_id' => 1,
+            'role_id' => 1,
         ];
     }
 }
