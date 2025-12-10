@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Livewire\UsersManager;
 use App\Livewire\ProductsManager;
+use App\Http\Controllers\Dev\SwaggerAutoAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,3 +38,6 @@ Route::middleware(['auth','status'])->group(function () {
         Route::get('products', ProductsManager::class)->name('products.index');
     });
 });
+
+Route::middleware('web')->post('dev/api-docs/auto-auth', SwaggerAutoAuthController::class)
+    ->name('dev.api-docs.auto-auth');

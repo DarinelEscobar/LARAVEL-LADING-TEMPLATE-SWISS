@@ -40,10 +40,459 @@
                     }
                 ]
             }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "List products",
+                "description": "Returns every product currently stored. Supports dashboard table feeds.",
+                "operationId": "37e24106b6fbefb8f373235579bb9e7a",
+                "responses": {
+                    "200": {
+                        "description": "List of products.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Create a product",
+                "operationId": "18775bf4c52140c0a5dec91bf9921115",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Product created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/products/{id}": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Show a product",
+                "operationId": "d94b7484be10ef9e7ca2e008dda261c2",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Update a product",
+                "operationId": "f2b14fef0702cbd3d76215fdc695c2fd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated resource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Product"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Delete a product",
+                "operationId": "329920a6c2dd1e69e93887ed000a6748",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Product ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully."
+                    },
+                    "404": {
+                        "description": "Product not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "List admin users",
+                "operationId": "e62295e08f148a0489159d29ed2db0ae",
+                "responses": {
+                    "200": {
+                        "description": "List of users.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/AdminUser"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "Create a user",
+                "operationId": "e3d2812d7db1b4fc8e9e9fa9fa066e06",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUser"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "Show a user",
+                "operationId": "e95a834cea971f847f8285f19786fc4d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User details.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "Update a user",
+                "operationId": "29c39932294f021461f929ce3866b0dc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUserInput"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated resource.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AdminUser"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin Users"
+                ],
+                "summary": "Delete a user",
+                "operationId": "541dfa98f4816d6107a68f55c2e5286b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted successfully."
+                    },
+                    "404": {
+                        "description": "User not found."
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
         }
     },
     "components": {
         "schemas": {
+            "Product": {
+                "description": "Persisted product resource.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 42
+                    },
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Swiss Precision Knife"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A minimal tool crafted with surgical precision.",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 129.99
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 15
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-01T09:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-05T11:30:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "ProductInput": {
+                "required": [
+                    "name",
+                    "price",
+                    "stock"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Swiss Precision Knife"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "A minimal tool crafted with surgical precision.",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 129.99
+                    },
+                    "stock": {
+                        "type": "integer",
+                        "format": "int32",
+                        "minimum": 0,
+                        "example": 15
+                    }
+                },
+                "type": "object"
+            },
             "AuthenticatedUser": {
                 "description": "Representation of the authenticated user returned by the profile endpoint.",
                 "properties": {
@@ -79,21 +528,122 @@
                     }
                 },
                 "type": "object"
+            },
+            "AdminUser": {
+                "description": "Full admin-managed user resource.",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 7
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Laura Morales"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "assistant@test.com"
+                    },
+                    "status_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "role_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "person_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-04T08:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-08T10:32:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "AdminUserInput": {
+                "required": [
+                    "name",
+                    "email",
+                    "password",
+                    "status_id",
+                    "role_id"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Laura Morales"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "assistant@test.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 8,
+                        "example": "super-secret"
+                    },
+                    "status_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "role_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "person_id": {
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 2,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
             "sanctum": {
                 "type": "http",
-                "description": "Issue a Sanctum token, then send it as `Authorization: Bearer <token>`.",
+                "scheme": "bearer",
                 "bearerFormat": "Token",
-                "scheme": "bearer"
+                "description": "Use the auto-login helper or paste a Sanctum token (Bearer <token>)."
             }
         }
     },
     "tags": [
         {
+            "name": "Products",
+            "description": "Product catalog management endpoints."
+        },
+        {
+            "name": "Admin Users",
+            "description": "User administration endpoints (role/status management)."
+        },
+        {
             "name": "Profile",
             "description": "Profile"
+        }
+    ],
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }

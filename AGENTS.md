@@ -91,5 +91,7 @@
 ## API Documentation
 - L5 Swagger is installed; generated UI lives at `GET /dev/api-docs` and JSON at `GET /dev/api-docs.json`. Both routes require `web`, `auth`, `status`, `role:1`.
 - The base contract is defined in `app/OpenApi/OpenApiSpec.php` and reusable schemas (e.g., `AuthenticatedUser`) live beside it. Add new schemas there or inline on controllers.
+- `app/OpenApi/Controllers/UserCrud.php` and `app/OpenApi/Controllers/ProductCrud.php` hold documentation-only annotations for the admin/user CRUD APIs—keep them in sync with any future API routes.
 - Guarded API controllers belong under `app/Http/Controllers/Api`. Annotate every endpoint with swagger-php docblocks so `php artisan l5-swagger:generate` keeps `storage/api-docs/api-docs.json` in sync.
 - Update `.env` or environment secrets if a different docs host is needed (`L5_SWAGGER_CONST_HOST`, `L5_SWAGGER_GENERATE_ALWAYS`).
+- Local-only helper: `/dev/api-docs/auto-auth` logs in the first active `role_id=1` admin, issues a Sanctum token, and the Swagger UI shows a “Auto login & authorize” button that calls it. Keep this endpoint disabled in production (controller guards via `App::environment`).
