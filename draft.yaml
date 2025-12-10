@@ -6,6 +6,16 @@ models:
     rememberToken: nullable
     timestamps: true
 
+  Product:
+    name: string
+    description: text
+    price: decimal:8,2
+    stock: integer
+    timestamps: true
+
 controllers:
   UserController:
+    resource: index, create, store, edit, update, destroy, show
+
+  ProductController:
     resource: index, create, store, edit, update, destroy, show

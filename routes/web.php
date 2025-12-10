@@ -27,9 +27,8 @@ Route::middleware(['auth','status'])->group(function () {
     Route::post('logout','AuthController@logout')->name('logout');
 
     Route::middleware(['role:1'])->group(function () {
-        Route::resource('users','Admin\AdminController')->except(['destroy', 'update','store']);
+        // Route::resource('users','Admin\AdminController')->except(['destroy', 'update','store']);
+        Route::resource('users', App\Http\Controllers\UserController::class);
+        Route::resource('products', App\Http\Controllers\ProductController::class);
     });
 });
-
-
-Route::resource('users', App\Http\Controllers\UserController::class);

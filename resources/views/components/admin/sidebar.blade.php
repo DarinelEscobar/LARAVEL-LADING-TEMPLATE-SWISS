@@ -13,6 +13,11 @@
                 <i class="fas fa-users text-gray-500"></i>
                 <span class="ml-3">Users</span>
             </a>
+            <a href="{{ route('products.index') }}"
+                class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                <i class="fas fa-box text-gray-500"></i>
+                <span class="ml-3">Products</span>
+            </a>
             <div>
                 <button type="button"
                     class="flex items-center w-full p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
