@@ -112,10 +112,18 @@
     <!-- User Modal -->
     <x-ui.modal name="user-modal" :title="$isEditing ? 'Edit User' : 'Create User'" maxWidth="lg">
         <form wire:submit="save" class="space-y-4">
-            <div>
-                <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Name</label>
-                <x-ui.input wire:model="name" class="mt-1" placeholder="John Doe" :error="$errors->has('name')" />
-                @error('name') <span class="text-sm text-destructive">{{ $message }}</span> @enderror
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">First Name(s)</label>
+                    <x-ui.input wire:model="person_names" class="mt-1" placeholder="John" :error="$errors->has('person_names')" />
+                    @error('person_names') <span class="text-sm text-destructive">{{ $message }}</span> @enderror
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Last Name(s)</label>
+                    <x-ui.input wire:model="person_surnames" class="mt-1" placeholder="Doe" :error="$errors->has('person_surnames')" />
+                    @error('person_surnames') <span class="text-sm text-destructive">{{ $message }}</span> @enderror
+                </div>
             </div>
 
             <div>

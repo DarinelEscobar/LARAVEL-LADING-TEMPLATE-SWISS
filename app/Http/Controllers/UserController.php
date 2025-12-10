@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Person;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -27,11 +29,19 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): RedirectResponse
     {
-        $user = User::create(array_merge($request->validated(), [
+        $person = Person::create([
+            'names' => $request->person_names,
+            'surnames' => $request->person_surnames,
+        ]);
+
+        $user = User::create([
+            'name' => $person->full_name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
             'status_id' => 1,
             'role_id' => 1,
-            'person_id' => 1,
-        ]));
+            'person_id' => $person->id,
+        ]);
 
         $request->session()->flash('user.id', $user->id);
 
@@ -54,7 +64,25 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request, User $user): RedirectResponse
     {
-        $user->update($request->validated());
+        $person = $user->person ?? Person::create([
+            'names' => $request->person_names,
+            'surnames' => $request->person_surnames,
+        ]);
+
+        $person->update([
+            'names' => $request->person_names,
+            'surnames' => $request->person_surnames,
+        ]);
+
+        $user->name = $person->full_name;
+        $user->email = $request->email;
+        $user->person_id = $person->id;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
 
         $request->session()->flash('user.id', $user->id);
 

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Person;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class PeopleTableSeeder extends Seeder
@@ -15,10 +14,22 @@ class PeopleTableSeeder extends Seeder
     {
         //
         mb_internal_encoding('UTF-8');
-        Person::create([
-            'names'             => mb_convert_case('FERNANDO DANIEL' , MB_CASE_TITLE),
-            'surnames'          => mb_convert_case('GARCIA ALVAREZ', MB_CASE_TITLE),
-        ]);
-        
+        $people = [
+            [
+                'names' => mb_convert_case('FERNANDO DANIEL', MB_CASE_TITLE),
+                'surnames' => mb_convert_case('GARCIA ALVAREZ', MB_CASE_TITLE),
+            ],
+            [
+                'names' => mb_convert_case('LAURA MIREYA', MB_CASE_TITLE),
+                'surnames' => mb_convert_case('MORALES PEREZ', MB_CASE_TITLE),
+            ],
+        ];
+
+        foreach ($people as $person) {
+            Person::firstOrCreate([
+                'names' => $person['names'],
+                'surnames' => $person['surnames'],
+            ]);
+        }
     }
 }

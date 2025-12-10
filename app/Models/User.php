@@ -46,4 +46,24 @@ class User extends Authenticatable
         'password' => 'hashed',
         'id' => 'integer',
     ];
+
+    /**
+     * The person behind this user.
+     */
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
+
+    /**
+     * Use person data when the user name is not set yet.
+     */
+    public function getNameAttribute($value)
+    {
+        if (!empty($value)) {
+            return $value;
+        }
+
+        return $this->person?->full_name ?? $value;
+    }
 }
