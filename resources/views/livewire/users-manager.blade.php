@@ -1,56 +1,112 @@
 <div>
     <div class="space-y-4">
-        <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold tracking-tight">Users</h2>
-            <x-ui.button wire:click="create" icon="plus">
-                Add User
-            </x-ui.button>
-        </div>
-
-        <div class="flex items-center space-x-2">
-             <div class="relative w-full max-w-sm">
-                 <x-ui.icon name="search" class="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                 <x-ui.input
-                    type="search"
-                    placeholder="Search users..."
-                    class="pl-8"
-                    wire:model.live.debounce.300ms="search"
-                />
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+            <div class="w-full sm:w-1/3">
+                <x-ui.input wire:model.live.debounce.300ms="search" placeholder="Search users..." class="w-full">
+                    <x-slot name="icon">
+                        <x-ui.icon name="search" class="text-muted-foreground" />
+                    </x-slot>
+                </x-ui.input>
+            </div>
+            <div class="flex items-center gap-2">
+                <label class="text-sm text-muted-foreground">Per Page:</label>
+                <select wire:model.live="perPage" class="bg-background border border-input rounded-md text-sm focus:ring-primary focus:border-primary">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <x-ui.button wire:click="create" variant="default" class="w-full sm:w-auto">
+                    <x-ui.icon name="plus" class="w-4 h-4 mr-2" />
+                    New User
+                </x-ui.button>
             </div>
         </div>
 
         <x-ui.card class="p-0">
-            <x-ui.table :headers="['ID', 'Name', 'Email', 'Created At', 'Actions']">
-                @forelse($users as $user)
-                    <tr class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
-                        <td class="p-4 align-middle font-medium">{{ $user->id }}</td>
-                        <td class="p-4 align-middle">{{ $user->name }}</td>
-                        <td class="p-4 align-middle">{{ $user->email }}</td>
-                        <td class="p-4 align-middle">{{ $user->created_at->format('d/m/Y') }}</td>
-                        <td class="p-4 align-middle">
-                            <div class="flex items-center gap-2">
-                                <x-ui.button variant="ghost" size="icon" wire:click="edit({{ $user->id }})">
-                                    <x-ui.icon name="pencil" class="w-4 h-4" />
-                                </x-ui.button>
-                                <x-ui.button variant="ghost" size="icon" wire:click="confirmDeletion({{ $user->id }})">
-                                    <x-ui.icon name="trash" class="w-4 h-4 text-destructive" />
-                                </x-ui.button>
-                            </div>
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="5" class="p-4 text-center text-muted-foreground">
-                            No users found.
-                        </td>
-                    </tr>
-                @endforelse
-            </x-ui.table>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="text-xs text-muted-foreground uppercase bg-muted/50 border-b border-border">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 cursor-pointer hover:text-foreground hover:bg-muted/80 transition-colors" wire:click="sortBy('id')">
+                                <div class="flex items-center gap-1">
+                                    ID
+                                    @if ($sortField === 'id')
+                                        <x-ui.icon name="{{ $sortDirection === 'asc' ? 'chevron-up' : 'chevron-down' }}" class="w-3 h-3" />
+                                    @endif
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 cursor-pointer hover:text-foreground hover:bg-muted/80 transition-colors" wire:click="sortBy('name')">
+                                <div class="flex items-center gap-1">
+                                    Name
+                                    @if ($sortField === 'name')
+                                        <x-ui.icon name="{{ $sortDirection === 'asc' ? 'chevron-up' : 'chevron-down' }}" class="w-3 h-3" />
+                                    @endif
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 cursor-pointer hover:text-foreground hover:bg-muted/80 transition-colors" wire:click="sortBy('email')">
+                                <div class="flex items-center gap-1">
+                                    Email
+                                    @if ($sortField === 'email')
+                                        <x-ui.icon name="{{ $sortDirection === 'asc' ? 'chevron-up' : 'chevron-down' }}" class="w-3 h-3" />
+                                    @endif
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 cursor-pointer hover:text-foreground hover:bg-muted/80 transition-colors" wire:click="sortBy('created_at')">
+                                <div class="flex items-center gap-1">
+                                    Date
+                                    @if ($sortField === 'created_at')
+                                        <x-ui.icon name="{{ $sortDirection === 'asc' ? 'chevron-up' : 'chevron-down' }}" class="w-3 h-3" />
+                                    @endif
+                                </div>
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border">
+                        @forelse ($users as $user)
+                            <tr class="bg-card hover:bg-muted/50 transition-colors">
+                                <td class="px-6 py-4 font-medium text-muted-foreground">#{{ $user->id }}</td>
+                                <td class="px-6 py-4 font-medium text-foreground">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+                                            {{ substr($user->name, 0, 2) }}
+                                        </div>
+                                        {{ $user->name }}
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 text-muted-foreground">{{ $user->email }}</td>
+                                <td class="px-6 py-4 text-muted-foreground">{{ $user->created_at->format('M d, Y') }}</td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <x-ui.button wire:click="edit({{ $user->id }})" variant="ghost" size="sm" class="h-8 w-8 p-0">
+                                            <x-ui.icon name="pencil" class="w-4 h-4 text-blue-500" />
+                                        </x-ui.button>
+                                        <x-ui.button wire:click="confirmDeletion({{ $user->id }})" variant="ghost" size="sm" class="h-8 w-8 p-0">
+                                            <x-ui.icon name="trash" class="w-4 h-4 text-destructive" />
+                                        </x-ui.button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center text-muted-foreground">
+                                    <div class="flex flex-col items-center justify-center gap-2">
+                                        <x-ui.icon name="search-x" class="w-8 h-8 opacity-50" />
+                                        <p>No users found matching "{{ $search }}"</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            @if ($users->hasPages())
+                <div class="p-4 border-t border-border">
+                    {{ $users->links() }}
+                </div>
+            @endif
         </x-ui.card>
-
-        <div class="mt-4">
-            {{ $users->links() }}
-        </div>
     </div>
 
     <!-- User Modal -->

@@ -11,9 +11,11 @@ use Illuminate\Validation\Rule;
 class UsersManager extends Component
 {
     use WithPagination;
+    use Traits\WithSorting;
 
     // Search & Filter
     public $search = '';
+    public $perPage = 10;
 
     // Model Properties
     public $name;
@@ -29,6 +31,9 @@ class UsersManager extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
+        'sortField' => ['except' => 'id'],
+        'sortDirection' => ['except' => 'desc'],
+        'perPage' => ['except' => 10],
     ];
 
     public function updatingSearch()
@@ -38,9 +43,12 @@ class UsersManager extends Component
 
     public function render()
     {
-        $users = User::where('name', 'like', '%' . $this->search . '%')
-            ->orWhere('email', 'like', '%' . $this->search . '%')
-            ->paginate(10);
+        $users = User::where(function ($query) {
+                $query->where('name', 'like', '%' . $this->search . '%')
+                      ->orWhere('email', 'like', '%' . $this->search . '%');
+            })
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
 
         return view('livewire.users-manager', [
             'users' => $users,

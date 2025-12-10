@@ -5,13 +5,16 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Product;
+use App\Livewire\Traits\WithSorting;
 
 class ProductsManager extends Component
 {
     use WithPagination;
+    use WithSorting;
 
-    // Search
+    // Search & Filter
     public $search = '';
+    public $perPage = 10;
 
     // Model Properties
     public $product_id;
@@ -28,6 +31,9 @@ class ProductsManager extends Component
 
     protected $queryString = [
         'search' => ['except' => ''],
+        'sortField' => ['except' => 'id'],
+        'sortDirection' => ['except' => 'desc'],
+        'perPage' => ['except' => 10],
     ];
 
     public function updatingSearch()
@@ -39,7 +45,8 @@ class ProductsManager extends Component
     {
         $products = Product::where('name', 'like', '%' . $this->search . '%')
             ->orWhere('description', 'like', '%' . $this->search . '%')
-            ->paginate(10);
+            ->orderBy($this->sortField, $this->sortDirection)
+            ->paginate($this->perPage);
 
         return view('livewire.products-manager', [
             'products' => $products,

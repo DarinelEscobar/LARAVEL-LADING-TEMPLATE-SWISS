@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Livewire\Traits;
+
+trait WithSorting
+{
+    public $sortField = 'id';
+    public $sortDirection = 'desc';
+
+    public function sortBy($field)
+    {
+        if ($this->sortField === $field) {
+            $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        } else {
+            $this->sortField = $field;
+            $this->sortDirection = 'asc';
+        }
+    }
+}
