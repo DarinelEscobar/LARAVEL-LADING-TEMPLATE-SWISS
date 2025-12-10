@@ -1,10 +1,5 @@
-@props(['padded' => true])
+@props(['class' => ''])
 
-@php
-    $base = 'bg-card text-card-foreground border border-border shadow-sm overflow-hidden';
-    $classes = $padded ? $base . ' rounded-lg' : $base;
-@endphp
-
-<div {{ $attributes->class($classes) }}>
+<div {{ $attributes->merge(['class' => 'rounded-xl border border-border bg-card text-card-foreground shadow-sm ' . $class]) }}>
     {{ $slot }}
 </div>

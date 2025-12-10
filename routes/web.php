@@ -28,7 +28,7 @@ Route::middleware(['auth','status'])->group(function () {
 
     Route::middleware(['role:1'])->group(function () {
         // Route::resource('users','Admin\AdminController')->except(['destroy', 'update','store']);
-        Route::resource('users', App\Http\Controllers\UserController::class);
-        Route::resource('products', App\Http\Controllers\ProductController::class);
+        Route::get('users', App\Livewire\UsersManager::class)->name('users.index');
+        Route::get('products', App\Livewire\ProductsManager::class)->name('products.index');
     });
 });

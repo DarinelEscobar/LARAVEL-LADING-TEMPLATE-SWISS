@@ -3,24 +3,26 @@
     'size' => 'md',
     'type' => 'button',
     'href' => null,
+    'icon' => null,
 ])
 
 @php
-    $baseClasses =
-        'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-none font-medium uppercase tracking-[0.2em] transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring';
+    $baseClasses = 'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all duration-200 disabled:opacity-50 disabled:pointer-events-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-ring active:scale-95';
 
     $variants = [
-        'default' => 'bg-primary text-primary-foreground border border-primary hover:bg-primary/90',
-        'outline' => 'border border-foreground/50 bg-transparent text-foreground hover:bg-foreground hover:text-background',
-        'ghost' => 'border border-transparent bg-transparent text-foreground hover:bg-muted hover:text-foreground',
-        'link' => 'border-transparent bg-transparent text-primary underline underline-offset-4 hover:text-primary/80 px-0',
+        'default' => 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
+        'destructive' => 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+        'outline' => 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+        'secondary' => 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+        'ghost' => 'hover:bg-accent hover:text-accent-foreground',
+        'link' => 'text-primary underline-offset-4 hover:underline',
     ];
 
     $sizes = [
-        'sm' => 'text-[11px] px-3 py-2 leading-none',
-        'md' => 'text-[11px] px-5 py-3 leading-none',
-        'lg' => 'text-xs px-6 py-4 leading-none',
-        'icon' => 'text-sm p-2 rounded-full',
+        'sm' => 'h-8 px-3 text-xs',
+        'md' => 'h-9 px-4 py-2 text-sm',
+        'lg' => 'h-10 px-8 text-base',
+        'icon' => 'h-9 w-9',
     ];
 
     $componentClasses = trim($baseClasses . ' ' . ($variants[$variant] ?? $variants['default']) . ' ' . ($sizes[$size] ?? $sizes['md']));
@@ -32,5 +34,8 @@
         type="{{ $type }}"
     @endif
     {{ $attributes->class($componentClasses)->merge($href ? ['href' => $href] : []) }}>
+    @if($icon)
+        <x-ui.icon :name="$icon" class="w-4 h-4" />
+    @endif
     {{ $slot }}
 </{{ $componentTag }}>

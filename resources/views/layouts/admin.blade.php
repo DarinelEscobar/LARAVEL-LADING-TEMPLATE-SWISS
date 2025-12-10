@@ -1,52 +1,36 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>{{ config('app.name') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-    {{-- Font awesome --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
-
-    {{-- test --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    {{-- produccion --}}
-    {{-- @php
-        $cwd = getcwd();
-        $cssName = basename(glob($cwd . '/build/assets/*.css')[0], '.css');
-        $jsName = basename(glob($cwd . '/build/assets/*.js')[0], '.js');
-        $css = asset('build/assets/' . $cssName . '.css');
-        $js = asset('build/assets/' . $jsName . '.js');
-    @endphp
-    <link rel="stylesheet" href="{{ $css }}" id="css">
-    <script src="{{ $js }}" id="js"></script> --}}
-    {{-- Agrega aquí tus estilos comunes --}}
     @livewireStyles
 </head>
 
-<body class="antialiased dark:bg-gray-900 flex flex-col min-h-screen">
-    @include('partials.alerts')
+<body class="h-full bg-background font-sans antialiased text-foreground selection:bg-primary/10">
 
-    <x-admin.header />
-
-    <div class="flex">
+    <div class="flex h-screen overflow-hidden">
         {{-- Sidebar --}}
         <x-admin.sidebar />
 
-        <main class="flex-grow p-6 w-full ml-64"> {{-- Adjust margin for sidebar --}}
-            @yield('content')
-        </main>
-    </div>
+        <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+            {{-- Header --}}
+            <x-admin.header />
 
-    <x-admin.footer />
+            {{-- Main Content --}}
+            <main class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+                @include('partials.alerts')
+                @yield('content')
+            </main>
+        </div>
+    </div>
 
     @livewireScripts
 </body>
