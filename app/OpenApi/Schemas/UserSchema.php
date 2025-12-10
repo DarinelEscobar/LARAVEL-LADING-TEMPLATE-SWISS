@@ -31,13 +31,13 @@ use OpenApi\Annotations as OA;
  *
  * @OA\Schema(
  *     schema="AdminUserInput",
- *     required={"name","email","password","status_id","role_id"},
- *     @OA\Property(property="name", type="string", maxLength=255, example="Laura Morales"),
+ *     required={"person_names","person_surnames","email"},
+ *     @OA\Property(property="person_names", type="string", maxLength=255, example="Laura Mireya"),
+ *     @OA\Property(property="person_surnames", type="string", maxLength=255, example="Morales Perez"),
  *     @OA\Property(property="email", type="string", format="email", example="assistant@test.com"),
- *     @OA\Property(property="password", type="string", minLength=8, example="super-secret"),
- *     @OA\Property(property="status_id", type="integer", format="int32", example=1),
- *     @OA\Property(property="role_id", type="integer", format="int32", example=1),
- *     @OA\Property(property="person_id", type="integer", format="int64", nullable=true, example=2)
+ *     @OA\Property(property="password", type="string", minLength=8, nullable=true, example="super-secret", description="Required when creating a user, optional on update."),
+ *     @OA\Property(property="status_id", type="integer", format="int32", nullable=true, example=1, description="Defaults to 1 (active) when omitted."),
+ *     @OA\Property(property="role_id", type="integer", format="int32", nullable=true, example=1, description="Defaults to 1 (admin) when omitted.")
  * )
  */
 class UserSchema

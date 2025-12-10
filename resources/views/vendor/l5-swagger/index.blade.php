@@ -170,6 +170,22 @@
             oauth2RedirectUrl: "{{ route('l5-swagger.'.$documentation.'.oauth2_callback', [], $useAbsolutePath) }}",
 
             requestInterceptor: function(request) {
+                @env(['local', 'development', 'testing'])
+                try {
+                    var currentOrigin = window.location.origin;
+                    var parsed = new URL(request.url, currentOrigin);
+                    var needsRewrite = ['localhost', '127.0.0.1'].includes(parsed.hostname) && parsed.origin !== currentOrigin;
+                    if (needsRewrite) {
+                        var safeOrigin = new URL(currentOrigin);
+                        parsed.protocol = safeOrigin.protocol;
+                        parsed.host = safeOrigin.host;
+                        request.url = parsed.toString();
+                    }
+                } catch (error) {
+                    console.warn('Swagger request rewrite failed', error);
+                }
+                @endenv
+
                 request.headers['X-CSRF-TOKEN'] = '{{ csrf_token() }}';
                 return request;
             },

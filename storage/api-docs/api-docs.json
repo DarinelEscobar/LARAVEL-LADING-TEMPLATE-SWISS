@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api",
+            "url": "http://localhost",
             "description": "Primary API server"
         }
     ],
@@ -576,17 +576,20 @@
             },
             "AdminUserInput": {
                 "required": [
-                    "name",
-                    "email",
-                    "password",
-                    "status_id",
-                    "role_id"
+                    "person_names",
+                    "person_surnames",
+                    "email"
                 ],
                 "properties": {
-                    "name": {
+                    "person_names": {
                         "type": "string",
                         "maxLength": 255,
-                        "example": "Laura Morales"
+                        "example": "Laura Mireya"
+                    },
+                    "person_surnames": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Morales Perez"
                     },
                     "email": {
                         "type": "string",
@@ -594,24 +597,24 @@
                         "example": "assistant@test.com"
                     },
                     "password": {
+                        "description": "Required when creating a user, optional on update.",
                         "type": "string",
                         "minLength": 8,
-                        "example": "super-secret"
+                        "example": "super-secret",
+                        "nullable": true
                     },
                     "status_id": {
+                        "description": "Defaults to 1 (active) when omitted.",
                         "type": "integer",
                         "format": "int32",
-                        "example": 1
+                        "example": 1,
+                        "nullable": true
                     },
                     "role_id": {
+                        "description": "Defaults to 1 (admin) when omitted.",
                         "type": "integer",
                         "format": "int32",
-                        "example": 1
-                    },
-                    "person_id": {
-                        "type": "integer",
-                        "format": "int64",
-                        "example": 2,
+                        "example": 1,
                         "nullable": true
                     }
                 },

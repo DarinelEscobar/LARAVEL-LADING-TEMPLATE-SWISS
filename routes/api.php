@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthenticatedUserController;
+use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,5 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')
-    ->get('/user', AuthenticatedUserController::class);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', AuthenticatedUserController::class)->name('api.profile.show');
+
+    Route::apiResource('users', UserApiController::class)->names('api.users');
+    Route::apiResource('products', ProductApiController::class)->names('api.products');
+});
