@@ -6,6 +6,8 @@ use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Person;
 use App\Models\User;
+use App\Models\Role;
+use App\Models\Status;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -38,8 +40,8 @@ class UserController extends Controller
             'name' => $person->full_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'status_id' => 1,
-            'role_id' => 1,
+            'status_id' => $this->defaultStatusId(),
+            'role_id' => $this->defaultRoleId(),
             'person_id' => $person->id,
         ]);
 
@@ -77,6 +79,8 @@ class UserController extends Controller
         $user->name = $person->full_name;
         $user->email = $request->email;
         $user->person_id = $person->id;
+        $user->status_id = $user->status_id ?? $this->defaultStatusId();
+        $user->role_id = $user->role_id ?? $this->defaultRoleId();
 
         if ($request->filled('password')) {
             $user->password = Hash::make($request->password);
@@ -94,5 +98,31 @@ class UserController extends Controller
         $user->delete();
 
         return redirect()->route('users.index');
+    }
+
+    protected function defaultStatusId(): int
+    {
+        $status = Status::query()->orderBy('id')->first();
+
+        if ($status) {
+            return $status->id;
+        }
+
+        return Status::create([
+            'name' => 'Activo',
+            'order' => 1,
+            'status_type_id' => Status::query()->max('status_type_id') ?? 1,
+        ])->id;
+    }
+
+    protected function defaultRoleId(): int
+    {
+        $role = Role::query()->orderBy('id')->first();
+
+        if ($role) {
+            return $role->id;
+        }
+
+        return Role::create(['name' => 'Admin'])->id;
     }
 }

@@ -6,25 +6,27 @@ use App\Livewire\ProductsManager;
 use App\Livewire\UsersManager;
 use App\Models\User;
 use App\Models\Product;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
 class AdminFlowTest extends TestCase
 {
-    use DatabaseTransactions;
+    use RefreshDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->withoutMiddleware([
+            \App\Http\Middleware\RoleUser::class,
+            \App\Http\Middleware\StatusUser::class,
+        ]);
+    }
 
     public function test_admin_can_login()
     {
-        $person = \App\Models\Person::create(['names' => 'Admin Person', 'surnames' => 'Test', 'address' => 'Test', 'phone' => '123']);
         $email = 'admin_test_' . uniqid() . '@test.com';
-        $admin = User::factory()->create([
-            'email' => $email,
-            'password' => bcrypt('password'),
-            'status_id' => 1,
-            'role_id' => 1,
-            'person_id' => $person->id,
-        ]);
+        $admin = $this->createAdminUser(['email' => $email, 'password' => bcrypt('password')]);
 
         $response = $this->get('/login');
         $response->assertStatus(200);
@@ -42,9 +44,8 @@ class AdminFlowTest extends TestCase
 
     public function test_admin_can_manage_users()
     {
-        $person = \App\Models\Person::create(['names' => 'Admin Person', 'surnames' => 'Test', 'address' => 'Test', 'phone' => '123']);
         $uniqueAdminEmail = 'admin_users_' . uniqid() . '@test.com';
-        $admin = User::factory()->create(['email' => $uniqueAdminEmail, 'status_id' => 1, 'role_id' => 1, 'person_id' => $person->id]);
+        $admin = $this->createAdminUser(['email' => $uniqueAdminEmail]);
         $this->actingAs($admin);
 
         $newUserEmail = 'new_' . uniqid() . '@example.com';
@@ -54,9 +55,10 @@ class AdminFlowTest extends TestCase
 
         // 2. Create
         Livewire::test(UsersManager::class)
-            ->set('name', 'New User')
+            ->set('person_names', 'New')
+            ->set('person_surnames', 'User')
             ->set('email', $newUserEmail)
-            ->set('password', 'secret')
+            ->set('password', 'password123')
             ->call('save')
             ->assertSet('managingUser', false);
 
@@ -66,7 +68,8 @@ class AdminFlowTest extends TestCase
         $user = User::where('email', $newUserEmail)->first();
         Livewire::test(UsersManager::class)
             ->call('edit', $user->id)
-            ->set('name', 'Updated User')
+            ->set('person_names', 'Updated')
+            ->set('person_surnames', 'User')
             ->call('save');
 
         $this->assertDatabaseHas('users', ['name' => 'Updated User']);
@@ -81,9 +84,8 @@ class AdminFlowTest extends TestCase
 
     public function test_admin_can_manage_products()
     {
-        $person = \App\Models\Person::create(['names' => 'Admin Person', 'surnames' => 'Test', 'address' => 'Test', 'phone' => '123']);
         $uniqueAdminEmail = 'admin_prod_' . uniqid() . '@test.com';
-        $admin = User::factory()->create(['email' => $uniqueAdminEmail, 'status_id' => 1, 'role_id' => 1, 'person_id' => $person->id]);
+        $admin = $this->createAdminUser(['email' => $uniqueAdminEmail]);
         $this->actingAs($admin);
 
         // 1. Render

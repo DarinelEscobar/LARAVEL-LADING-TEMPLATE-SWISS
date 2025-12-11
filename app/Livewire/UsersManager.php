@@ -5,6 +5,9 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Person;
+use App\Models\Role;
+use App\Models\Status;
+use App\Models\StatusType;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -125,13 +128,15 @@ class UsersManager extends Component
             session()->flash('message', 'User updated successfully.');
         } else {
             $person = Person::create($personData);
+            $statusId = $this->defaultStatusId();
+            $roleId = $this->defaultRoleId();
 
             User::create([
                 'name' => $person->full_name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
-                'status_id' => 1, // Default params
-                'role_id' => 1,
+                'status_id' => $statusId,
+                'role_id' => $roleId,
                 'person_id' => $person->id,
             ]);
             session()->flash('message', 'User created successfully.');
@@ -166,5 +171,33 @@ class UsersManager extends Component
         $this->email = '';
         $this->password = '';
         $this->user_id = null;
+    }
+
+    protected function defaultStatusId(): int
+    {
+        $status = Status::query()->orderBy('id')->first();
+
+        if ($status) {
+            return $status->id;
+        }
+
+        $statusType = StatusType::query()->orderBy('id')->first() ?? StatusType::create(['name' => 'Account']);
+
+        return Status::create([
+            'name' => 'Activo',
+            'order' => 1,
+            'status_type_id' => $statusType->id,
+        ])->id;
+    }
+
+    protected function defaultRoleId(): int
+    {
+        $role = Role::query()->orderBy('id')->first();
+
+        if ($role) {
+            return $role->id;
+        }
+
+        return Role::create(['name' => 'Admin'])->id;
     }
 }

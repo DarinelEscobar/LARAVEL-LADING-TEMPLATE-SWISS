@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashBoardController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Livewire\UsersManager;
 use App\Livewire\ProductsManager;
 use App\Http\Controllers\Dev\SwaggerAutoAuthController;
@@ -36,6 +38,9 @@ Route::middleware(['auth','status'])->group(function () {
         // Route::resource('users','Admin\AdminController')->except(['destroy', 'update','store']);
         Route::get('users', UsersManager::class)->name('users.index');
         Route::get('products', ProductsManager::class)->name('products.index');
+
+        Route::resource('products', ProductController::class)->except(['index']);
+        Route::resource('users', UserController::class)->except(['index']);
     });
 });
 

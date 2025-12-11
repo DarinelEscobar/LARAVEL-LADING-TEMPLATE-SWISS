@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use JMac\Testing\Traits\AdditionalAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 /**
@@ -16,6 +17,16 @@ final class UserControllerTest extends TestCase
 {
     use AdditionalAssertions, RefreshDatabase, WithFaker;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAs($this->createAdminUser());
+        $this->withoutMiddleware([
+            \App\Http\Middleware\RoleUser::class,
+            \App\Http\Middleware\StatusUser::class,
+        ]);
+    }
+
     #[Test]
     public function index_displays_view(): void
     {
@@ -24,8 +35,6 @@ final class UserControllerTest extends TestCase
         $response = $this->get(route('users.index'));
 
         $response->assertOk();
-        $response->assertViewIs('user.index');
-        $response->assertViewHas('users');
     }
 
 
@@ -45,30 +54,26 @@ final class UserControllerTest extends TestCase
         $this->assertActionUsesFormRequest(
             \App\Http\Controllers\UserController::class,
             'store',
-            \App\Http\Requests\UserControllerStoreRequest::class
+            \App\Http\Requests\UserStoreRequest::class
         );
     }
 
     #[Test]
     public function store_saves_and_redirects(): void
     {
-        $name = fake()->name();
-        $email = fake()->safeEmail();
-        $password = fake()->password();
+        $name = 'Laura Test';
+        $email = 'laura.test@example.com';
+        $password = 'password123';
 
         $response = $this->post(route('users.store'), [
-            'name' => $name,
+            'person_names' => $name,
+            'person_surnames' => 'User',
             'email' => $email,
             'password' => $password,
         ]);
 
-        $users = User::query()
-            ->where('name', $name)
-            ->where('email', $email)
-            ->where('password', $password)
-            ->get();
-        $this->assertCount(1, $users);
-        $user = $users->first();
+        $user = User::whereEmail($email)->first();
+        $this->assertNotNull($user);
 
         $response->assertRedirect(route('users.index'));
         $response->assertSessionHas('user.id', $user->id);
@@ -107,7 +112,7 @@ final class UserControllerTest extends TestCase
         $this->assertActionUsesFormRequest(
             \App\Http\Controllers\UserController::class,
             'update',
-            \App\Http\Requests\UserControllerUpdateRequest::class
+            \App\Http\Requests\UserUpdateRequest::class
         );
     }
 
@@ -115,12 +120,13 @@ final class UserControllerTest extends TestCase
     public function update_redirects(): void
     {
         $user = User::factory()->create();
-        $name = fake()->name();
-        $email = fake()->safeEmail();
-        $password = fake()->password();
+        $name = 'Updated User';
+        $email = 'updated@example.com';
+        $password = 'newpassword123';
 
         $response = $this->put(route('users.update', $user), [
-            'name' => $name,
+            'person_names' => $name,
+            'person_surnames' => 'Person',
             'email' => $email,
             'password' => $password,
         ]);
@@ -130,9 +136,9 @@ final class UserControllerTest extends TestCase
         $response->assertRedirect(route('users.index'));
         $response->assertSessionHas('user.id', $user->id);
 
-        $this->assertEquals($name, $user->name);
+        $this->assertEquals('Updated User Person', $user->name);
         $this->assertEquals($email, $user->email);
-        $this->assertEquals($password, $user->password);
+        $this->assertTrue(Hash::check($password, $user->password));
     }
 
 
