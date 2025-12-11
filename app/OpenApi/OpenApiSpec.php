@@ -21,6 +21,14 @@ use OpenApi\Annotations as OA;
  *     bearerFormat="Token",
  *     description="Issue a Sanctum token, then send it as `Authorization: Bearer <token>`."
  * )
+ * @OA\Schema(
+ *     schema="ApiResponse",
+ *     @OA\Property(property="status", type="string", example="success"),
+ *     @OA\Property(property="message", type="string", example="OK"),
+ *     @OA\Property(property="data", type="object"),
+ *     @OA\Property(property="meta", type="object"),
+ *     @OA\Property(property="error_code", type="string", nullable=true)
+ * )
  */
 class OpenApiSpec
 {

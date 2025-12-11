@@ -22,7 +22,18 @@ class ProductCrud
      *     @OA\Response(
      *         response=200,
      *         description="List of products.",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Product"))
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         type="array",
+     *                         @OA\Items(ref="#/components/schemas/Product")
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     )
      * )
      */
@@ -43,7 +54,17 @@ class ProductCrud
      *     @OA\Response(
      *         response=201,
      *         description="Product created.",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/Product"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=422, description="Validation error.")
      * )
@@ -68,7 +89,17 @@ class ProductCrud
      *     @OA\Response(
      *         response=200,
      *         description="Product details.",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/Product"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=404, description="Product not found.")
      * )
@@ -97,7 +128,17 @@ class ProductCrud
      *     @OA\Response(
      *         response=200,
      *         description="Updated resource.",
-     *         @OA\JsonContent(ref="#/components/schemas/Product")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/Product"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=404, description="Product not found.")
      * )
@@ -119,7 +160,7 @@ class ProductCrud
      *         description="Product ID",
      *         @OA\Schema(type="integer", format="int64")
      *     ),
-     *     @OA\Response(response=204, description="Deleted successfully."),
+     *     @OA\Response(response=200, description="Deleted successfully."),
      *     @OA\Response(response=404, description="Product not found.")
      * )
      */

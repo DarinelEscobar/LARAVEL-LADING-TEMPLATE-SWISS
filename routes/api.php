@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/user', AuthenticatedUserController::class)->name('api.profile.show');
+Route::prefix('v1')
+    ->middleware(['auth:sanctum', 'status', 'role:1']) // Standardized Middleware
+    ->group(function () {
+        Route::get('/user', AuthenticatedUserController::class)->name('api.profile.show');
 
-    Route::apiResource('users', UserApiController::class)->names('api.users');
-    Route::apiResource('products', ProductApiController::class)->names('api.products');
-});
+        Route::apiResource('users', UserApiController::class)->names('api.users');
+        Route::apiResource('products', ProductApiController::class)->names('api.products');
+    });

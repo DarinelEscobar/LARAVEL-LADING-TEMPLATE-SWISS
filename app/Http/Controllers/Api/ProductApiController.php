@@ -14,34 +14,34 @@ class ProductApiController extends Controller
     {
         $products = Product::query()
             ->latest('id')
-            ->get();
+            ->paginate(10);
 
-        return response()->json($products);
+        return \App\Http\Responses\ApiResponse::success($products);
     }
 
     public function store(ProductStoreRequest $request): JsonResponse
     {
         $product = Product::create($request->validated());
 
-        return response()->json($product, 201);
+        return \App\Http\Responses\ApiResponse::success($product, 'Product created successfully', 201);
     }
 
     public function show(Product $product): JsonResponse
     {
-        return response()->json($product);
+        return \App\Http\Responses\ApiResponse::success($product);
     }
 
     public function update(ProductUpdateRequest $request, Product $product): JsonResponse
     {
         $product->update($request->validated());
 
-        return response()->json($product->fresh());
+        return \App\Http\Responses\ApiResponse::success($product->fresh(), 'Product updated successfully');
     }
 
     public function destroy(Product $product): JsonResponse
     {
         $product->delete();
 
-        return response()->json(null, 204);
+        return \App\Http\Responses\ApiResponse::success(null, 'Product deleted successfully', 200);
     }
 }

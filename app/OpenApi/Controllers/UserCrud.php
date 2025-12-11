@@ -21,7 +21,18 @@ class UserCrud
      *     @OA\Response(
      *         response=200,
      *         description="List of users.",
-     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/AdminUser"))
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         type="array",
+     *                         @OA\Items(ref="#/components/schemas/AdminUser")
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     )
      * )
      */
@@ -42,7 +53,17 @@ class UserCrud
      *     @OA\Response(
      *         response=201,
      *         description="User created.",
-     *         @OA\JsonContent(ref="#/components/schemas/AdminUser")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/AdminUser"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=422, description="Validation error.")
      * )
@@ -67,7 +88,17 @@ class UserCrud
      *     @OA\Response(
      *         response=200,
      *         description="User details.",
-     *         @OA\JsonContent(ref="#/components/schemas/AdminUser")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/AdminUser"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=404, description="User not found.")
      * )
@@ -96,7 +127,17 @@ class UserCrud
      *     @OA\Response(
      *         response=200,
      *         description="Updated resource.",
-     *         @OA\JsonContent(ref="#/components/schemas/AdminUser")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/AdminUser"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(response=404, description="User not found.")
      * )
@@ -118,7 +159,7 @@ class UserCrud
      *         description="User ID",
      *         @OA\Schema(type="integer", format="int64")
      *     ),
-     *     @OA\Response(response=204, description="Deleted successfully."),
+     *     @OA\Response(response=200, description="Deleted successfully."),
      *     @OA\Response(response=404, description="User not found.")
      * )
      */

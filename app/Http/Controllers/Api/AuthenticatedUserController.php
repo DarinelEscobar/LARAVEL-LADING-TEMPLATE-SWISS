@@ -17,7 +17,17 @@ class AuthenticatedUserController
      *     @OA\Response(
      *         response=200,
      *         description="Authenticated user's profile.",
-     *         @OA\JsonContent(ref="#/components/schemas/AuthenticatedUser")
+     *         @OA\JsonContent(
+     *             allOf={
+     *                 @OA\Schema(ref="#/components/schemas/ApiResponse"),
+     *                 @OA\Schema(
+     *                     @OA\Property(
+     *                         property="data",
+     *                         ref="#/components/schemas/AuthenticatedUser"
+     *                     )
+     *                 )
+     *             }
+     *         )
      *     ),
      *     @OA\Response(
      *         response=401,
@@ -27,6 +37,6 @@ class AuthenticatedUserController
      */
     public function __invoke(Request $request): JsonResponse
     {
-        return response()->json($request->user());
+        return \App\Http\Responses\ApiResponse::success($request->user());
     }
 }

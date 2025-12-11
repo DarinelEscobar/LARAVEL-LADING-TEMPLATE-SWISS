@@ -34,6 +34,8 @@
 - Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`; name tests by intent (`test_guest_cannot_access_dashboard`).
 - Livewire admin screens are in `UsersManager`/`ProductsManager`; when feature-testing them, disable `RoleUser`/`StatusUser` middleware where needed and set `person_names`/`person_surnames` fields for users.
 - Run the suite with `php ./vendor/bin/pest --colors=always` before merging; prefer the scoped API command for faster checks when only API changes were made.
+- Generator helper: `php artisan make:test ProductApiTest --pest --unit` (swap name per endpoint) to scaffold Pest tests quickly.
+- Standard: every new endpoint must ship with at least index/show/store/update/destroy coverage in Pest.
 
 ## Commit & Pull Request Guidelines
 - Commits: imperative, present tense (e.g., `Add admin status table`). Include rationale for non-trivial changes.
@@ -111,3 +113,8 @@
     - **Micro-interactions**: Hover states on rows and interactive elements.
 - **Consistency Check**: When adding a new module, verify it matches the behavior and style of existing `Users` and `Products` modules.
 
+## API Standardization
+- **Versioning**: strict `/api/v1/` prefix. Breaking changes require `/v2`.
+- **Responses**: Use `ApiResponse::success()` / `ApiResponse::error()`.
+- **Errors**: Throw `ApiException` for controlled errors.
+- **Documentation**: Swagger schemas must use `ApiResponse` wrapper via `allOf`.

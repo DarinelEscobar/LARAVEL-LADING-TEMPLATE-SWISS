@@ -19,9 +19,9 @@ class UserApiController extends Controller
         $users = User::query()
             ->with('person')
             ->latest('id')
-            ->get();
+            ->paginate(10);
 
-        return response()->json($users);
+        return \App\Http\Responses\ApiResponse::success($users);
     }
 
     public function store(UserStoreRequest $request): JsonResponse
@@ -42,12 +42,12 @@ class UserApiController extends Controller
             'person_id' => $person->id,
         ]);
 
-        return response()->json($user->load('person'), 201);
+        return \App\Http\Responses\ApiResponse::success($user->load('person'), 'User created successfully', 201);
     }
 
     public function show(User $user): JsonResponse
     {
-        return response()->json($user->load('person'));
+        return \App\Http\Responses\ApiResponse::success($user->load('person'));
     }
 
     public function update(UserUpdateRequest $request, User $user): JsonResponse
@@ -79,14 +79,14 @@ class UserApiController extends Controller
 
         $user->save();
 
-        return response()->json($user->load('person'));
+        return \App\Http\Responses\ApiResponse::success($user->load('person'), 'User updated successfully');
     }
 
     public function destroy(User $user): JsonResponse
     {
         $user->delete();
 
-        return response()->json(null, 204);
+        return \App\Http\Responses\ApiResponse::success(null, 'User deleted successfully', 200); // 204 typically has no content, sticking to 200 with message for API consistency or 204 empty? Plan said uniform responses. 204 prevents returning body. Let's use 200 for now to allow status/message.
     }
 
     private function defaultStatusId(): int

@@ -34,6 +34,8 @@
 - Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`; name tests by intent (`test_guest_cannot_access_dashboard`).
 - Livewire admin screens are in `UsersManager`/`ProductsManager`; when feature-testing them, disable `RoleUser`/`StatusUser` middleware where needed and set `person_names`/`person_surnames` fields for users.
 - Run the suite with `php ./vendor/bin/pest --colors=always` before merging; prefer the scoped API command for faster checks when only API changes were made.
+- Generator helper: `php artisan make:test ProductApiTest --pest --unit` (swap name per endpoint) to scaffold Pest tests quickly.
+- Standard: every new endpoint must ship with at least index/show/store/update/destroy coverage in Pest.
 
 ## Commit & Pull Request Guidelines
 - Commits: imperative, present tense (e.g., `Add admin status table`). Include rationale for non-trivial changes.
@@ -111,3 +113,16 @@
     - **Micro-interactions**: Hover states on rows and interactive elements.
 - **Consistency Check**: When adding a new module, verify it matches the behavior and style of existing `Users` and `Products` modules.
 
+## API Standardization & Versioning (Strict)
+- **Versioning**: All APIs MUST be versioned (e.g., `/api/v1/...`).
+    - ❌ **PROHIBITED**: Breaking changes in `/v1` (renaming fields, changing types, mandatory params).
+    - ❌ **PROHIBITED**: Removing endpoints in `/v1`.
+    - ✅ **REQUIRED**: Create `/v2` for any breaking behavior.
+- **Route Management**: Versioned API routes (`routes/api.php`) MUST be maintained manually. Do NOT allow Blueprint to regenerate/overwrite them.
+- **Response Format**: All APIs MUST return JSON using `App\Http\Responses\ApiResponse`.
+    - `success($data)`: Wraps data in `data`, adds metadata.
+    - `error($message)`: Returns standardized error payload.
+- **Error Handling**: Throw `App\Exceptions\ApiException` for domain logic errors. Do not return raw 400s manually.
+- **Swagger Documentation**:
+    - Every response MUST assume the `ApiResponse` wrapper.
+    - Use `allOf` in `@OA\Response` to combine `ApiResponse` schema with your model schema in `data`.
