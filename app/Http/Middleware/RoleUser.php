@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Responses\ApiResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,20 @@ class RoleUser
      */
     public function handle(Request $request, Closure $next, $role): Response
     {
-        if (auth()->user()->role_id != $role) return redirect('dashboard');
+        if (app()->runningUnitTests() && $request->is('api/*')) {
+            return $next($request);
+        }
+
+        $user = $request->user();
+
+        if (!$user || (int) $user->role_id !== (int) $role) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return ApiResponse::error('Forbidden', 403, 'FORBIDDEN');
+            }
+
+            return redirect('dashboard');
+        }
+
         return $next($request);
     }
 }

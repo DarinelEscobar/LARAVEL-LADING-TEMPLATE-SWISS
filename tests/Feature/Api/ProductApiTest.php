@@ -18,7 +18,9 @@ it('lists products', function () {
 
     getJson(route('api.products.index'))
         ->assertOk()
-        ->assertJsonCount(2);
+        ->assertJsonPath('status', 'success')
+        ->assertJsonCount(2, 'data')
+        ->assertJsonPath('meta.pagination.total', 2);
 });
 
 it('creates a product', function () {
@@ -31,7 +33,9 @@ it('creates a product', function () {
 
     postJson(route('api.products.store'), $payload)
         ->assertCreated()
-        ->assertJsonPath('name', 'Swiss Watch');
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data.name', 'Swiss Watch')
+        ->assertJsonPath('data.stock', 5);
 
     expect(Product::whereName('Swiss Watch')->exists())->toBeTrue();
 });
@@ -51,15 +55,18 @@ it('updates a product', function () {
 
     putJson(route('api.products.update', $product), $payload)
         ->assertOk()
-        ->assertJsonPath('name', 'Updated Name')
-        ->assertJsonPath('stock', 12);
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data.name', 'Updated Name')
+        ->assertJsonPath('data.stock', 12);
 });
 
 it('deletes a product', function () {
     $product = Product::factory()->create();
 
     deleteJson(route('api.products.destroy', $product))
-        ->assertNoContent();
+        ->assertOk()
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data', null);
 
     expect(Product::whereKey($product->id)->exists())->toBeFalse();
 });

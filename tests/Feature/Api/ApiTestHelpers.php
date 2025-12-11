@@ -10,14 +10,20 @@ use Laravel\Sanctum\Sanctum;
 
 function ensureApiReferenceData(): array
 {
-    $statusType = StatusType::firstOrCreate(['name' => 'Account']);
-
-    $status = Status::firstOrCreate(
-        ['name' => 'Activo', 'status_type_id' => $statusType->id],
-        ['order' => 1]
+    $statusType = StatusType::firstOrCreate(
+        ['id' => 1],
+        ['name' => 'Account']
     );
 
-    $role = Role::firstOrCreate(['name' => 'Admin']);
+    $status = Status::firstOrCreate(
+        ['id' => 1],
+        ['name' => 'Activo', 'status_type_id' => $statusType->id, 'order' => 1]
+    );
+
+    $role = Role::firstOrCreate(
+        ['id' => 1],
+        ['name' => 'Admin']
+    );
 
     return [$status, $role];
 }
@@ -48,7 +54,7 @@ function authenticateAsAdmin(): User
         'email' => 'admin+' . Str::random(4) . '@test.com',
     ]);
 
-    Sanctum::actingAs($admin);
+    Sanctum::actingAs($admin, ['*'], 'sanctum');
 
     return $admin;
 }

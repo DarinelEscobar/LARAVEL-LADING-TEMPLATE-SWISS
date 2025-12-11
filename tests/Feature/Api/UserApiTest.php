@@ -21,11 +21,17 @@ it('lists users', function () {
     makeUserForApi(['email' => 'one@example.com']);
     makeUserForApi(['email' => 'two@example.com']);
 
-    getJson(route('api.users.index'))
+    $response = getJson(route('api.users.index'))
         ->assertOk()
+        ->assertJsonPath('status', 'success')
         ->assertJsonStructure([
-            '*' => ['id', 'name', 'email', 'status_id', 'role_id', 'person_id'],
+            'data' => [
+                '*' => ['id', 'name', 'email', 'status_id', 'role_id', 'person_id'],
+            ],
         ]);
+
+    $emails = collect($response->json('data'))->pluck('email');
+    expect($emails)->toContain('one@example.com', 'two@example.com');
 });
 
 it('creates a user', function () {
@@ -40,7 +46,9 @@ it('creates a user', function () {
 
     postJson(route('api.users.store'), $payload)
         ->assertCreated()
-        ->assertJsonPath('email', 'laura@example.com');
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data.email', 'laura@example.com')
+        ->assertJsonPath('data.name', 'Laura Morales');
 
     expect(User::whereEmail('laura@example.com')->exists())->toBeTrue();
 });
@@ -56,15 +64,18 @@ it('updates a user', function () {
 
     putJson(route('api.users.update', $user), $payload)
         ->assertOk()
-        ->assertJsonPath('email', 'updated@example.com')
-        ->assertJsonPath('name', 'Updated User');
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data.email', 'updated@example.com')
+        ->assertJsonPath('data.name', 'Updated User');
 });
 
 it('deletes a user', function () {
     $user = makeUserForApi();
 
     deleteJson(route('api.users.destroy', $user))
-        ->assertNoContent();
+        ->assertOk()
+        ->assertJsonPath('status', 'success')
+        ->assertJsonPath('data', null);
 
     expect(User::whereKey($user->id)->exists())->toBeFalse();
 });
