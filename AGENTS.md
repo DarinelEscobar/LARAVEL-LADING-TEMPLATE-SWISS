@@ -13,8 +13,7 @@
 - `php artisan serve` - run Laravel app locally.
 - `php artisan migrate --seed` - migrate and seed DB.
 - `php artisan test` - run PHPUnit test suite.
-- `./vendor/bin/pest` - run the Pest suite (API coverage lives under `tests/Feature/Api`). Use `./vendor/bin/pest tests/Feature/Api` for the API subset.
- - `php ./vendor/bin/pest --colors=always` - run the Pest suite (recommended on Windows/PowerShell to ensure proper PHP interpreter); use `php ./vendor/bin/pest tests/Feature/Api --colors=always` for the API subset.
+- `php ./vendor/bin/pest --colors=always` - primary test runner (Pest). Scope to API suite with `php ./vendor/bin/pest tests/Feature/Api --colors=always`.
 - `php artisan l5-swagger:generate` - regenerate the OpenAPI spec (`storage/api-docs/api-docs.json`) after you touch annotations.
 
 ## UI Toolkit & Icons
@@ -31,9 +30,10 @@
 - Tables plural, lowercase (`status_types`); columns in English. Use dependency injection; keep controllers thin.
 
 ## Testing Guidelines
-- Framework: PHPUnit (see `phpunit.xml`). Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`.
-- Name tests by intent: `test_guest_cannot_access_dashboard`.
-- Use factories and `RefreshDatabase` where needed. Run `php artisan test` before merging.
+- Prefer Pest (default suite) even though PHPUnit is available. Use `Tests\TestCase::createAdminUser()` and `seedReferenceData()` helpers to pre-seed `status`/`role`/`person` dependencies for CRUD/auth flows.
+- Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`; name tests by intent (`test_guest_cannot_access_dashboard`).
+- Livewire admin screens are in `UsersManager`/`ProductsManager`; when feature-testing them, disable `RoleUser`/`StatusUser` middleware where needed and set `person_names`/`person_surnames` fields for users.
+- Run the suite with `php ./vendor/bin/pest --colors=always` before merging; prefer the scoped API command for faster checks when only API changes were made.
 
 ## Commit & Pull Request Guidelines
 - Commits: imperative, present tense (e.g., `Add admin status table`). Include rationale for non-trivial changes.
