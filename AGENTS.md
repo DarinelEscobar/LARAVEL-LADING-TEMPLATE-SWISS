@@ -100,3 +100,14 @@
 - Update `.env` or environment secrets if a different docs host is needed (`L5_SWAGGER_CONST_HOST`, `L5_SWAGGER_GENERATE_ALWAYS`).
 - Local-only helper: `/dev/api-docs/auto-auth` logs in the first active `role_id=1` admin, issues a Sanctum token, and the Swagger UI shows a “Auto login & authorize” button that calls it. Keep this endpoint disabled in production (controller guards via `App::environment`).
 - Automated API coverage lives in `tests/Feature/Api/*` (Pest). Helpers for seeding references/auth are in `tests/Feature/Api/ApiTestHelpers.php`.
+
+## UI/UX Consistency & Best Practices
+- **Design System**: All new admin modules MUST use the "Swiss Design" approach. Utilize the reusable Blade components in `resources/views/components/ui` (e.g., `x-ui.table`, `x-ui.modal`, `x-ui.input`, `x-ui.badge`) to ensure visual consistency (rounded corners, soft shadows, refined typography).
+- **Architecture**: You **MUST** use **Livewire** components for all admin CRUD modules to provide a seamless Single Page Application (SPA) experience.
+- **Table Standards**: functional tables MUST include:
+    - **Sorting**: Interactive column headers with Ascending/Descending toggles.
+    - **Pagination**: "Per Page" dropdown selector (10, 25, 50, 100).
+    - **Search**: Real-time debounce search filtering.
+    - **Micro-interactions**: Hover states on rows and interactive elements.
+- **Consistency Check**: When adding a new module, verify it matches the behavior and style of existing `Users` and `Products` modules.
+

@@ -5,7 +5,7 @@
 - Frontend: Blade layouts in `resources/views/layouts`; pages in `resources/views/pages`; Livewire views under `resources/views/livewire`; reusable UI parts in `resources/views/components/ui`; landing components in `resources/views/components/landing`.
 - Assets: Tailwind/JS entries in `resources/css/app.css`, `resources/js/app.js`, `resources/js/landing-page.js`; Vite config in `vite.config.js`. Fonts/colors/animation utilities live alongside Tailwind tokens in `app.css`.
 - Data: migrations/seeders in `database/`; public assets in `public/`; caches/logs in `storage/`.
-- Routing: `routes/web.php` for web (auth/status/role guarded); API routes in `routes/api.php`. Admin dashboard is `GET /dashboard` (middleware `auth`, `status`, `role:1`).
+- Routing: `routes/web.php` for web (auth/status/role guarded); API routes in `routes/api.php`. Admin dashboard is `GET /dashboard` (middleware `auth`, `status`, `role:1`).- Admin CRUD modules now include `status-types` and `statuses` resources (controllers + Blade views) under the `role:1` web group.
 
 ## Build, Test, and Development Commands
 - `npm run dev` - Vite dev server for assets.
@@ -13,6 +13,7 @@
 - `php artisan serve` - run Laravel app locally.
 - `php artisan migrate --seed` - migrate and seed DB.
 - `php artisan test` - run PHPUnit test suite.
+- `php ./vendor/bin/pest --colors=always` - primary test runner (Pest). Scope to API suite with `php ./vendor/bin/pest tests/Feature/Api --colors=always`.
 - `php artisan l5-swagger:generate` - regenerate the OpenAPI spec (`storage/api-docs/api-docs.json`) after you touch annotations.
 
 ## UI Toolkit & Icons
@@ -29,9 +30,10 @@
 - Tables plural, lowercase (`status_types`); columns in English. Use dependency injection; keep controllers thin.
 
 ## Testing Guidelines
-- Framework: PHPUnit (see `phpunit.xml`). Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`.
-- Name tests by intent: `test_guest_cannot_access_dashboard`.
-- Use factories and `RefreshDatabase` where needed. Run `php artisan test` before merging.
+- Prefer Pest (default suite) even though PHPUnit is available. Use `Tests\TestCase::createAdminUser()` and `seedReferenceData()` helpers to pre-seed `status`/`role`/`person` dependencies for CRUD/auth flows.
+- Place HTTP/db flows in `tests/Feature`, pure logic in `tests/Unit`; name tests by intent (`test_guest_cannot_access_dashboard`).
+- Livewire admin screens are in `UsersManager`/`ProductsManager`; when feature-testing them, disable `RoleUser`/`StatusUser` middleware where needed and set `person_names`/`person_surnames` fields for users.
+- Run the suite with `php ./vendor/bin/pest --colors=always` before merging; prefer the scoped API command for faster checks when only API changes were made.
 
 ## Commit & Pull Request Guidelines
 - Commits: imperative, present tense (e.g., `Add admin status table`). Include rationale for non-trivial changes.
@@ -73,8 +75,9 @@
 - **Testing Requirement**:
   - After every Blueprint build:
     ```
-    php artisan test
+    php ./vendor/bin/pest --colors=always
     ```
+  - If only API endpoints were touched, you can scope to `tests/Feature/Api` for a quicker pre-check, but run the full suite before merge.
 
 
 ## Folder Structure
@@ -91,5 +94,20 @@
 ## API Documentation
 - L5 Swagger is installed; generated UI lives at `GET /dev/api-docs` and JSON at `GET /dev/api-docs.json`. Both routes require `web`, `auth`, `status`, `role:1`.
 - The base contract is defined in `app/OpenApi/OpenApiSpec.php` and reusable schemas (e.g., `AuthenticatedUser`) live beside it. Add new schemas there or inline on controllers.
-- Guarded API controllers belong under `app/Http/Controllers/Api`. Annotate every endpoint with swagger-php docblocks so `php artisan l5-swagger:generate` keeps `storage/api-docs/api-docs.json` in sync.
+- `app/OpenApi/Controllers/UserCrud.php` and `app/OpenApi/Controllers/ProductCrud.php` hold documentation-only annotations for the admin/user CRUD APIs—keep them in sync with any future API routes.
+- Guarded API controllers belong under `app/Http/Controllers/Api` (see `UserApiController` and `ProductApiController`). Their routes live in `routes/api.php` behind `auth:sanctum`.
+- Annotate every endpoint with swagger-php docblocks so `php artisan l5-swagger:generate` keeps `storage/api-docs/api-docs.json` in sync.
 - Update `.env` or environment secrets if a different docs host is needed (`L5_SWAGGER_CONST_HOST`, `L5_SWAGGER_GENERATE_ALWAYS`).
+- Local-only helper: `/dev/api-docs/auto-auth` logs in the first active `role_id=1` admin, issues a Sanctum token, and the Swagger UI shows a “Auto login & authorize” button that calls it. Keep this endpoint disabled in production (controller guards via `App::environment`).
+- Automated API coverage lives in `tests/Feature/Api/*` (Pest). Helpers for seeding references/auth are in `tests/Feature/Api/ApiTestHelpers.php`.
+
+## UI/UX Consistency & Best Practices
+- **Design System**: All new admin modules MUST use the "Swiss Design" approach. Utilize the reusable Blade components in `resources/views/components/ui` (e.g., `x-ui.table`, `x-ui.modal`, `x-ui.input`, `x-ui.badge`) to ensure visual consistency (rounded corners, soft shadows, refined typography).
+- **Architecture**: You **MUST** use **Livewire** components for all admin CRUD modules to provide a seamless Single Page Application (SPA) experience.
+- **Table Standards**: functional tables MUST include:
+    - **Sorting**: Interactive column headers with Ascending/Descending toggles.
+    - **Pagination**: "Per Page" dropdown selector (10, 25, 50, 100).
+    - **Search**: Real-time debounce search filtering.
+    - **Micro-interactions**: Hover states on rows and interactive elements.
+- **Consistency Check**: When adding a new module, verify it matches the behavior and style of existing `Users` and `Products` modules.
+
