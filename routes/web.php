@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\StatusController;
+use App\Http\Controllers\StatusTypeController;
 use App\Livewire\UsersManager;
 use App\Livewire\ProductsManager;
 use App\Http\Controllers\Dev\SwaggerAutoAuthController;
@@ -41,6 +43,8 @@ Route::middleware(['auth','status'])->group(function () {
 
         Route::resource('products', ProductController::class)->except(['index']);
         Route::resource('users', UserController::class)->except(['index']);
+        Route::resource('status-types', StatusTypeController::class);
+        Route::resource('statuses', StatusController::class);
     });
 });
 
