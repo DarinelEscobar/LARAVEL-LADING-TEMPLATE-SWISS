@@ -13,6 +13,7 @@
 - `php artisan serve` - run Laravel app locally.
 - `php artisan migrate --seed` - migrate and seed DB.
 - `php artisan test` - run PHPUnit test suite.
+- `./vendor/bin/pest` - run the Pest suite (API coverage lives under `tests/Feature/Api`). Use `./vendor/bin/pest tests/Feature/Api` for the API subset.
 - `php artisan l5-swagger:generate` - regenerate the OpenAPI spec (`storage/api-docs/api-docs.json`) after you touch annotations.
 
 ## UI Toolkit & Icons
@@ -96,3 +97,4 @@
 - Annotate every endpoint with swagger-php docblocks so `php artisan l5-swagger:generate` keeps `storage/api-docs/api-docs.json` in sync.
 - Update `.env` or environment secrets if a different docs host is needed (`L5_SWAGGER_CONST_HOST`, `L5_SWAGGER_GENERATE_ALWAYS`).
 - Local-only helper: `/dev/api-docs/auto-auth` logs in the first active `role_id=1` admin, issues a Sanctum token, and the Swagger UI shows a “Auto login & authorize” button that calls it. Keep this endpoint disabled in production (controller guards via `App::environment`).
+- Automated API coverage lives in `tests/Feature/Api/*` (Pest). Helpers for seeding references/auth are in `tests/Feature/Api/ApiTestHelpers.php`.
