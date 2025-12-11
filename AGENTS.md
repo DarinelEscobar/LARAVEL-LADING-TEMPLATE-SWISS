@@ -14,6 +14,7 @@
 - `php artisan migrate --seed` - migrate and seed DB.
 - `php artisan test` - run PHPUnit test suite.
 - `./vendor/bin/pest` - run the Pest suite (API coverage lives under `tests/Feature/Api`). Use `./vendor/bin/pest tests/Feature/Api` for the API subset.
+ - `php ./vendor/bin/pest --colors=always` - run the Pest suite (recommended on Windows/PowerShell to ensure proper PHP interpreter); use `php ./vendor/bin/pest tests/Feature/Api --colors=always` for the API subset.
 - `php artisan l5-swagger:generate` - regenerate the OpenAPI spec (`storage/api-docs/api-docs.json`) after you touch annotations.
 
 ## UI Toolkit & Icons

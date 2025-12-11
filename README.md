@@ -1,71 +1,83 @@
 # Web Backup
 
-Laravel 10 application with a Swiss-inspired landing page and a minimalist admin dashboard. Auth flows, password recovery, and status management are powered by Livewire 3, Blade components, and TailwindCSS with anime.js-driven motion.
+Aplicación Laravel 10 con una landing page de estilo suizo y un panel de administración minimalista.
 
-## Stack
-- Laravel 10 (PHP 8.1+), MySQL/MariaDB, Composer
-- Livewire 3 for auth and dashboard UI (`app/Livewire`), Blade layouts in `resources/views/layouts`
-- TailwindCSS 3.4, Flowbite, and anime.js via Vite (`resources/css/app.css`, `resources/js/app.js`, `resources/js/landing-page.js`)
-- Icon sets: Lucide and Heroicons Blade components
+Este README breve muestra cómo instalar, ejecutar y probar la aplicación en un entorno de desarrollo (Windows / PowerShell y Linux/macOS).
 
-### Main tools
-- **Anime.js** → included via Vite as a vanilla JS module
-- **Livewire components** → auth and dashboard flows under `app/Livewire`
-- **Lucide / Heroicons** → rendered through Blade icon packages
-- **TailwindCSS** → already configured in the Laravel project
+## Requisitos
+- PHP 8.1+
+- Composer
+- Node.js (v16+) y npm
+- MySQL/MariaDB (o usar SQLite para tests locales)
 
-## Getting started
-1) Copy env and configure database: `cp .env.example .env`  
-2) Install PHP deps: `composer install`  
-3) Generate key: `php artisan key:generate`  
-4) Run migrations and seeders: `php artisan migrate --seed`  
-5) Install JS deps: `npm install`  
-6) Dev servers: `php artisan serve` and `npm run dev` (Vite)
+## Instalación rápida (Windows - PowerShell)
+1. Copiar el fichero de entorno y configurarlo:
 
-For a production asset build, run `npm run build`.
+copy .env.example .env
 
-## Authentication
-- Login at `/login`; admin dashboard at `/dashboard` (middleware: `auth`, `status`, `role:1`)
-- Seeded admin user: `admin@test.com` / `password`
-- Password reset flow uses `password_reset_tokens` with Livewire components in `app/Livewire/Auth`
+2. Instalar dependencias PHP y JS:
 
-## Project layout
-- Pages in `resources/views/pages`; reusable UI in `resources/views/components/{ui,landing}`; partials in `resources/views/partials`
-- Landing page content comes from `app/Livewire/Dashboard/Home.php` and `resources/views/livewire/dashboard/home.blade.php`
-- Admin dashboard view is `resources/views/pages/admin.blade.php` rendered by `App\Http\Controllers\Admin\AdminController@dashboard`, showing seeded status records
+composer install
+npm install
 
-## Folder Structure
+3. Generar la APP key:
 
-The project follows a component-based architecture to separate concerns (Header, Main Content, Footer) for both the Landing Page and the Admin Dashboard.
+php artisan key:generate
 
-### `resources/views`
+4. Migrar y seedear la base de datos (modo desarrollo):
 
--   **`layouts/`**: Contains the main layout files.
-    -   `landing-page.blade.php`: Layout for the public landing page.
-    -   `admin.blade.php`: Layout for the admin dashboard.
-    -   `authentication.blade.php`: Layout for login/register pages.
+php artisan migrate --seed
 
--   **`components/`**: Reusable Blade components.
-    -   **`landing/`**: Components specific to the landing page (e.g., `header`, `footer`, `hero`, `showcase`).
-    -   **`admin/`**: Components specific to the admin dashboard (e.g., `header`, `footer`).
-    -   **`ui/`**: General UI components (buttons, inputs, cards).
+5. Levantar servidores de desarrollo:
 
--   **`pages/`**: Main page views that extend layouts.
-    -   `dashboard.blade.php`: The main admin dashboard page.
+php artisan serve
+npm run dev
 
--   **`livewire/`**: Livewire components for dynamic functionality.
-    -   `dashboard/home.blade.php`: The main content of the landing page.
+Para producción, compilar assets con:
 
-### Component Usage
+npm run build
 
-Both the Landing Page and Admin Dashboard layouts are structured as follows:
+## Estructura principal
+- Código backend: `app/` (Controllers, Models, Livewire components)
+- Vistas Blade: `resources/views/`
+- Assets: `resources/css/`, `resources/js/` (Vite)
+- Rutas: `routes/web.php`, `routes/api.php`
 
-1.  **Header**: `<x-landing.header />` or `<x-admin.header />`
-2.  **Main Content**: `@yield('content')` (which may contain Livewire components)
-3.  **Footer**: `<x-landing.footer />` or `<x-admin.footer />`
+Para más detalles sobre organización de carpetas, consultar `AGENTS.md`.
 
-This ensures a consistent structure and makes it easy to maintain or swap out parts of the UI.
+## Autenticación y permisos
+- El dashboard de administrador está protegido por middleware `auth`, `status` y `role:1`.
+- Usuario administrador por defecto (seed): `admin@test.com` / `password` (si el seeder lo provee).
 
+## Tests
+Se utilizan Pest/PHPUnit para la suite de tests. En Windows/PowerShell es recomendable invocar el binario de Pest a través de PHP para asegurar que se use el intérprete correcto y ver salida coloreada.
 
-## Testing
-Run the suite with `php artisan test`.
+Comando recomendado (PowerShell / Windows):
+
+php ./vendor/bin/pest --colors=always
+
+Alternativa (ejecutar PHPUnit vía Artisan):
+
+php artisan test
+
+Nota: Si los tests fallan por falta de datos referenciales (por ejemplo `status` o `roles`), vuelva a ejecutar migraciones y seeders para el entorno de testing o asegúrese de que los factories crean las relaciones necesarias.
+
+## Comandos útiles
+- Ver rutas registradas:
+
+php artisan route:list
+
+- Reconstruir base de datos de desarrollo:
+
+php artisan migrate:fresh --seed
+
+## Sugerencias y siguientes pasos
+- Añadir en `composer.json` un script conveniente para tests (opcional):
+
+"scripts": {
+  "test:pest": "php ./vendor/bin/pest --colors=always"
+}
+
+- Para un entorno de CI es buena práctica usar SQLite en memoria o una BD de pruebas aislada y asegurarse de ejecutar los seeders mínimos que necesite la suite.
+
+Si quieres, adapto este README para que sea bilingüe (ES/EN) o añado secciones específicas para contributors y despliegue.
