@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthenticatedUserController;
 use App\Http\Controllers\Api\ProductApiController;
+use App\Http\Controllers\Api\StatusApiController;
+use App\Http\Controllers\Api\StatusTypeApiController;
 use App\Http\Controllers\Api\UserApiController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,4 +25,6 @@ Route::prefix('v1')
 
         Route::apiResource('users', UserApiController::class)->names('api.users');
         Route::apiResource('products', ProductApiController::class)->names('api.products');
+        Route::apiResource('status-types', StatusTypeApiController::class)->names('api.status-types');
+        Route::apiResource('statuses', StatusApiController::class)->names('api.statuses');
     });

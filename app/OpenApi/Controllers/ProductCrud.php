@@ -14,7 +14,7 @@ class ProductCrud
 {
     /**
      * @OA\Get(
-     *     path="/api/products",
+     *     path="/api/v1/products",
      *     summary="List products",
      *     description="Returns every product currently stored. Supports dashboard table feeds.",
      *     tags={"Products"},
@@ -43,7 +43,7 @@ class ProductCrud
 
     /**
      * @OA\Post(
-     *     path="/api/products",
+     *     path="/api/v1/products",
      *     summary="Create a product",
      *     tags={"Products"},
      *     security={{"sanctum": {}}},
@@ -75,7 +75,7 @@ class ProductCrud
 
     /**
      * @OA\Get(
-     *     path="/api/products/{id}",
+     *     path="/api/v1/products/{id}",
      *     summary="Show a product",
      *     tags={"Products"},
      *     security={{"sanctum": {}}},
@@ -110,7 +110,7 @@ class ProductCrud
 
     /**
      * @OA\Put(
-     *     path="/api/products/{id}",
+     *     path="/api/v1/products/{id}",
      *     summary="Update a product",
      *     tags={"Products"},
      *     security={{"sanctum": {}}},
@@ -149,7 +149,7 @@ class ProductCrud
 
     /**
      * @OA\Delete(
-     *     path="/api/products/{id}",
+     *     path="/api/v1/products/{id}",
      *     summary="Delete a product",
      *     tags={"Products"},
      *     security={{"sanctum": {}}},

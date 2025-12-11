@@ -14,7 +14,7 @@ class UserCrud
 {
     /**
      * @OA\Get(
-     *     path="/api/users",
+     *     path="/api/v1/users",
      *     summary="List admin users",
      *     tags={"Admin Users"},
      *     security={{"sanctum": {}}},
@@ -42,7 +42,7 @@ class UserCrud
 
     /**
      * @OA\Post(
-     *     path="/api/users",
+     *     path="/api/v1/users",
      *     summary="Create a user",
      *     tags={"Admin Users"},
      *     security={{"sanctum": {}}},
@@ -74,7 +74,7 @@ class UserCrud
 
     /**
      * @OA\Get(
-     *     path="/api/users/{id}",
+     *     path="/api/v1/users/{id}",
      *     summary="Show a user",
      *     tags={"Admin Users"},
      *     security={{"sanctum": {}}},
@@ -109,7 +109,7 @@ class UserCrud
 
     /**
      * @OA\Put(
-     *     path="/api/users/{id}",
+     *     path="/api/v1/users/{id}",
      *     summary="Update a user",
      *     tags={"Admin Users"},
      *     security={{"sanctum": {}}},
@@ -148,7 +148,7 @@ class UserCrud
 
     /**
      * @OA\Delete(
-     *     path="/api/users/{id}",
+     *     path="/api/v1/users/{id}",
      *     summary="Delete a user",
      *     tags={"Admin Users"},
      *     security={{"sanctum": {}}},

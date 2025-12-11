@@ -53,14 +53,14 @@
                 ]
             }
         },
-        "/api/products": {
+        "/api/v1/products": {
             "get": {
                 "tags": [
                     "Products"
                 ],
                 "summary": "List products",
                 "description": "Returns every product currently stored. Supports dashboard table feeds.",
-                "operationId": "37e24106b6fbefb8f373235579bb9e7a",
+                "operationId": "2945a6aae9819fc98cbbf590f5d87829",
                 "responses": {
                     "200": {
                         "description": "List of products.",
@@ -99,7 +99,7 @@
                     "Products"
                 ],
                 "summary": "Create a product",
-                "operationId": "18775bf4c52140c0a5dec91bf9921115",
+                "operationId": "a79382dda3850d843d51944986006372",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -144,13 +144,13 @@
                 ]
             }
         },
-        "/api/products/{id}": {
+        "/api/v1/products/{id}": {
             "get": {
                 "tags": [
                     "Products"
                 ],
                 "summary": "Show a product",
-                "operationId": "d94b7484be10ef9e7ca2e008dda261c2",
+                "operationId": "a679ad7789c9137e4b898744cdff4bc5",
                 "parameters": [
                     {
                         "name": "id",
@@ -201,7 +201,7 @@
                     "Products"
                 ],
                 "summary": "Update a product",
-                "operationId": "f2b14fef0702cbd3d76215fdc695c2fd",
+                "operationId": "735ddc041c56cfe1a8d884df990b2a16",
                 "parameters": [
                     {
                         "name": "id",
@@ -262,7 +262,7 @@
                     "Products"
                 ],
                 "summary": "Delete a product",
-                "operationId": "329920a6c2dd1e69e93887ed000a6748",
+                "operationId": "c78d83e7f5e6f826415c86a53ae93f53",
                 "parameters": [
                     {
                         "name": "id",
@@ -290,23 +290,35 @@
                 ]
             }
         },
-        "/status-types": {
+        "/api/v1/status-types": {
             "get": {
                 "tags": [
                     "Status Types"
                 ],
                 "summary": "List status types",
-                "operationId": "a133edc439ab74636aaf0aa2b70ebcc2",
+                "operationId": "e5416fe2d7909419926b4a53201f84e0",
                 "responses": {
                     "200": {
                         "description": "List of status types",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/StatusType"
-                                    }
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/StatusType"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -323,7 +335,7 @@
                     "Status Types"
                 ],
                 "summary": "Create status type",
-                "operationId": "2bb200d1722cfe4b5e82d4f26e0ae514",
+                "operationId": "ba46a1a43dce868c60ee152e1dff9a96",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -349,7 +361,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/StatusType"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/StatusType"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -362,13 +386,13 @@
                 ]
             }
         },
-        "/status-types/{id}": {
+        "/api/v1/status-types/{id}": {
             "get": {
                 "tags": [
                     "Status Types"
                 ],
                 "summary": "Show status type",
-                "operationId": "ed760888e70146172e6a77a3e1f8f732",
+                "operationId": "62e69a663d5c60b9aeded12fabed7c78",
                 "parameters": [
                     {
                         "name": "id",
@@ -385,7 +409,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/StatusType"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/StatusType"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -402,7 +438,7 @@
                     "Status Types"
                 ],
                 "summary": "Update status type",
-                "operationId": "591d23b7a9645af4a1eb0f8d7a34ab52",
+                "operationId": "4be949e4b62fafd8e42305662c170d7f",
                 "parameters": [
                     {
                         "name": "id",
@@ -438,7 +474,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/StatusType"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/StatusType"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -455,7 +503,7 @@
                     "Status Types"
                 ],
                 "summary": "Delete status type",
-                "operationId": "acdd30624f8e4bd68a04168f6a3045c5",
+                "operationId": "68db8c400dedabdf892f630437f1b2b2",
                 "parameters": [
                     {
                         "name": "id",
@@ -467,8 +515,15 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "Deleted"
+                    "200": {
+                        "description": "Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -478,23 +533,35 @@
                 ]
             }
         },
-        "/statuses": {
+        "/api/v1/statuses": {
             "get": {
                 "tags": [
                     "Statuses"
                 ],
                 "summary": "List statuses",
-                "operationId": "30012afa03fc1d55ffb01b50efc9bc9d",
+                "operationId": "0bcfb502296449f8a34587c7316736f4",
                 "responses": {
                     "200": {
                         "description": "List of statuses",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Status"
-                                    }
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Status"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -511,7 +578,7 @@
                     "Statuses"
                 ],
                 "summary": "Create status",
-                "operationId": "b863381a18caa82325084f74f7ca7e94",
+                "operationId": "2834b68169477631620d4ada42325040",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -547,7 +614,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Status"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Status"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -560,13 +639,13 @@
                 ]
             }
         },
-        "/statuses/{id}": {
+        "/api/v1/statuses/{id}": {
             "get": {
                 "tags": [
                     "Statuses"
                 ],
                 "summary": "Show status",
-                "operationId": "d9ecc86232301c4937304b0fd3a658ad",
+                "operationId": "004f789425599d815b010af1ef261849",
                 "parameters": [
                     {
                         "name": "id",
@@ -583,7 +662,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Status"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Status"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -600,7 +691,7 @@
                     "Statuses"
                 ],
                 "summary": "Update status",
-                "operationId": "06e52027202223b611ba610d97645040",
+                "operationId": "5ae1343a2f3b1d7d1d101c5a9cbe8fec",
                 "parameters": [
                     {
                         "name": "id",
@@ -646,7 +737,19 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/Status"
+                                    "allOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ApiResponse"
+                                        },
+                                        {
+                                            "properties": {
+                                                "data": {
+                                                    "$ref": "#/components/schemas/Status"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    ]
                                 }
                             }
                         }
@@ -663,7 +766,7 @@
                     "Statuses"
                 ],
                 "summary": "Delete status",
-                "operationId": "a16654390468218a21c3d5ef88dbdc32",
+                "operationId": "74868f88e0551d3888b21ef90ef29fba",
                 "parameters": [
                     {
                         "name": "id",
@@ -675,8 +778,15 @@
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "Deleted"
+                    "200": {
+                        "description": "Deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ApiResponse"
+                                }
+                            }
+                        }
                     }
                 },
                 "security": [
@@ -686,13 +796,13 @@
                 ]
             }
         },
-        "/api/users": {
+        "/api/v1/users": {
             "get": {
                 "tags": [
                     "Admin Users"
                 ],
                 "summary": "List admin users",
-                "operationId": "e62295e08f148a0489159d29ed2db0ae",
+                "operationId": "56a6bd65d61589099b53a2cbc177a45d",
                 "responses": {
                     "200": {
                         "description": "List of users.",
@@ -731,7 +841,7 @@
                     "Admin Users"
                 ],
                 "summary": "Create a user",
-                "operationId": "e3d2812d7db1b4fc8e9e9fa9fa066e06",
+                "operationId": "11ebe83653a95270889f7ed219801f56",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -776,13 +886,13 @@
                 ]
             }
         },
-        "/api/users/{id}": {
+        "/api/v1/users/{id}": {
             "get": {
                 "tags": [
                     "Admin Users"
                 ],
                 "summary": "Show a user",
-                "operationId": "e95a834cea971f847f8285f19786fc4d",
+                "operationId": "d47f28ad87d6df92e384f45d9b15d570",
                 "parameters": [
                     {
                         "name": "id",
@@ -833,7 +943,7 @@
                     "Admin Users"
                 ],
                 "summary": "Update a user",
-                "operationId": "29c39932294f021461f929ce3866b0dc",
+                "operationId": "fee4d99f84d2b4f8a57ef6b6d5d704e6",
                 "parameters": [
                     {
                         "name": "id",
@@ -894,7 +1004,7 @@
                     "Admin Users"
                 ],
                 "summary": "Delete a user",
-                "operationId": "541dfa98f4816d6107a68f55c2e5286b",
+                "operationId": "2f1c0deff6b49964797f7551cb4f40de",
                 "parameters": [
                     {
                         "name": "id",
