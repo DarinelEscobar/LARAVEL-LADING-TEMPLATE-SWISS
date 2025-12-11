@@ -5,7 +5,7 @@
 - Frontend: Blade layouts in `resources/views/layouts`; pages in `resources/views/pages`; Livewire views under `resources/views/livewire`; reusable UI parts in `resources/views/components/ui`; landing components in `resources/views/components/landing`.
 - Assets: Tailwind/JS entries in `resources/css/app.css`, `resources/js/app.js`, `resources/js/landing-page.js`; Vite config in `vite.config.js`. Fonts/colors/animation utilities live alongside Tailwind tokens in `app.css`.
 - Data: migrations/seeders in `database/`; public assets in `public/`; caches/logs in `storage/`.
-- Routing: `routes/web.php` for web (auth/status/role guarded); API routes in `routes/api.php`. Admin dashboard is `GET /dashboard` (middleware `auth`, `status`, `role:1`).
+- Routing: `routes/web.php` for web (auth/status/role guarded); API routes in `routes/api.php`. Admin dashboard is `GET /dashboard` (middleware `auth`, `status`, `role:1`).- Admin CRUD modules now include `status-types` and `statuses` resources (controllers + Blade views) under the `role:1` web group.
 
 ## Build, Test, and Development Commands
 - `npm run dev` - Vite dev server for assets.
@@ -75,8 +75,9 @@
 - **Testing Requirement**:
   - After every Blueprint build:
     ```
-    php artisan test
+    php ./vendor/bin/pest --colors=always
     ```
+  - If only API endpoints were touched, you can scope to `tests/Feature/Api` for a quicker pre-check, but run the full suite before merge.
 
 
 ## Folder Structure
