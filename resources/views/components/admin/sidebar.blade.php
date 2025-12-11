@@ -15,7 +15,7 @@
                         ['label' => 'Users', 'route' => 'users.index', 'icon' => 'users'],
                         ['label' => 'Products', 'route' => 'products.index', 'icon' => 'package'],
                         ['label' => 'Status Types', 'route' => 'status-types.index', 'icon' => 'layers'],
-                        ['label' => 'Statuses', 'route' => 'statuses.index', 'icon' => 'flag'],
+                        ['label' => 'Statuses', 'route' => 'statuses.index', 'icon' => 'tag'],
                     ];
                 @endphp
 

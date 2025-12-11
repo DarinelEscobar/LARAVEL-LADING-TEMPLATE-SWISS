@@ -43,8 +43,15 @@ Route::middleware(['auth','status'])->group(function () {
 
         Route::resource('products', ProductController::class)->except(['index']);
         Route::resource('users', UserController::class)->except(['index']);
-        Route::resource('status-types', StatusTypeController::class);
-        Route::resource('statuses', StatusController::class);
+
+        // Livewire Implementations
+        Route::get('status-types', \App\Livewire\StatusTypesManager::class)->name('status-types.index');
+        Route::get('statuses', \App\Livewire\StatusesManager::class)->name('statuses.index');
+
+        // Note: We might want to keep the resource controllers for backend APIs if needed,
+        // but for now we are replacing the frontend routes.
+        // Route::resource('status-types', StatusTypeController::class);
+        // Route::resource('statuses', StatusController::class);
     });
 });
 
