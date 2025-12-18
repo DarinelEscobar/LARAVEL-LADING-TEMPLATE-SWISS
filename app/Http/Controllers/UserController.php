@@ -45,9 +45,7 @@ class UserController extends Controller
             'person_id' => $person->id,
         ]);
 
-        $request->session()->flash('user.id', $user->id);
-
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('user.id', $user->id);
     }
 
     public function show(Request $request, User $user): View
@@ -88,9 +86,7 @@ class UserController extends Controller
 
         $user->save();
 
-        $request->session()->flash('user.id', $user->id);
-
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('user.id', $user->id);
     }
 
     public function destroy(Request $request, User $user): RedirectResponse
