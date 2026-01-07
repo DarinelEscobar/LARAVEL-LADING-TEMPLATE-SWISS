@@ -43,7 +43,13 @@ npm run build
 - Assets: `resources/css/`, `resources/js/` (Vite)
 - Rutas: `routes/web.php`, `routes/api.php`
 
-Para más detalles sobre organización de carpetas, consultar `AGENTS.md`.
+
+## Documentación de API (Swagger)
+La aplicación cuenta con documentación interactiva de la API con Swagger.
+- **URL:** [http://localhost/dev/api-docs](http://localhost/dev/api-docs)
+- **Acceso:** Requiere sesión activa (`auth`), estado activo (`status`) y rol de administrador (`role:1`).
+- **Auto-auth:** En desarrollo, puedes usar el botón "Auto login & authorize" o ir a `/dev/api-docs/auto-auth` para obtener un token automáticamente.
+
 
 ## Autenticación y permisos
 - El dashboard de administrador está protegido por middleware `auth`, `status` y `role:1`.
